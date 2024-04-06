@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using EntityFrameworkCore.MySQL.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -18,6 +21,9 @@ builder.Services.AddCors((options) =>
             .WithOrigins("http://localhost:3000");
         });
 });
+
+var connectionString = builder.Configuration.GetConnectionString("MySqlConn");
+builder.Services.AddDbContext<AppDbContext>(options => options.UseMySQL(connectionString));
 
 var app = builder.Build();
 
