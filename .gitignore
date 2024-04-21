@@ -3,6 +3,8 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+
+
 # User-specific files
 *.rsuser
 *.suo
@@ -17,20 +19,20 @@
 mono_crash.*
 
 # Build results
-[Dd]ebug/
-[Dd]ebugPublic/
-[Rr]elease/
-[Rr]eleases/
-x64/
-x86/
-[Ww][Ii][Nn]32/
-[Aa][Rr][Mm]/
-[Aa][Rr][Mm]64/
-bld/
-[Bb]in/
-[Oo]bj/
-[Ll]og/
-[Ll]ogs/
+fitness-app/[Dd]ebug/
+fitness-app/[Dd]ebugPublic/
+fitness-app/[Rr]elease/
+fitness-app/[Rr]eleases/
+fitness-app/x64/
+fitness-app/x86/
+fitness-app/[Ww][Ii][Nn]32/
+fitness-app/[Aa][Rr][Mm]/
+fitness-app/[Aa][Rr][Mm]64/
+fitness-app/bld/
+fitness-app/[Bb]in/
+fitness-app/[Oo]bj/
+fitness-app/[Ll]og/
+fitness-app/[Ll]ogs/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
@@ -38,7 +40,7 @@ bld/
 #wwwroot/
 
 # Visual Studio 2017 auto generated files
-Generated\ Files/
+fitness-app/Generated\ Files/
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
@@ -58,15 +60,15 @@ dlldata.c
 BenchmarkDotNet.Artifacts/
 
 # .NET Core
-project.lock.json
-project.fragment.lock.json
-artifacts/
+fitness-app/project.lock.json
+fitness-app/project.fragment.lock.json
+fitness-app/artifacts/
 
 # ASP.NET Scaffolding
-ScaffoldingReadMe.txt
+fitness-app/ScaffoldingReadMe.txt
 
 # StyleCop
-StyleCopReport.xml
+fitness-app/StyleCopReport.xml
 
 # Files built by Visual Studio
 *_i.c
@@ -166,14 +168,14 @@ AutoTest.Net/
 [Ee]xpress/
 
 # DocProject is a documentation generator add-in
-DocProject/buildhelp/
-DocProject/Help/*.HxT
-DocProject/Help/*.HxC
-DocProject/Help/*.hhc
-DocProject/Help/*.hhk
-DocProject/Help/*.hhp
-DocProject/Help/Html2
-DocProject/Help/html
+fitness-app/DocProject/buildhelp/
+fitness-app/DocProject/Help/*.HxT
+fitness-app/DocProject/Help/*.HxC
+fitness-app/DocProject/Help/*.hhc
+fitness-app/DocProject/Help/*.hhk
+fitness-app/DocProject/Help/*.hhp
+fitness-app/DocProject/Help/Html2
+fitness-app/DocProject/Help/html
 
 # Click-Once directory
 publish/
