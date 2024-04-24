@@ -22,8 +22,11 @@ builder.Services.AddCors((options) =>
         });
 });
 
-var connectionString = builder.Configuration.GetConnectionString("MySqlConn");
-builder.Services.AddDbContext<AppDbContext>(options => options.UseMySQL(connectionString));
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    options.UseSqlite("Data Source=FitnessDB.db");
+});
+
 
 var app = builder.Build();
 
