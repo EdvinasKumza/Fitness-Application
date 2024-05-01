@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using EntityFrameworkCore.MySQL.Data;
+using Microsoft.Extensions.DependencyModel;
+using FitnessApp.Services;
+using FitnessApp.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +30,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=FitnessDB.db");
 });
 
+builder.Services.AddScoped<IWorkoutService, WorkoutService>();
+builder.Services.AddScoped<IWorkoutRepository, WorkoutRepository>();
 
 var app = builder.Build();
 
