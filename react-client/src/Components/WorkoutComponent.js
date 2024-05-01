@@ -13,6 +13,7 @@ const WorkoutTracker = () => {
 
   const fetchPreviousWorkouts = async () => {
     const response = await fetch('http://localhost:5260/api/workouts');
+    await testFunction();
     const data = await response.json();
     setPreviousWorkouts(data);
   };
@@ -59,10 +60,22 @@ const WorkoutTracker = () => {
         <ul>
           {previousWorkouts.map((workout) => (
             <li key={workout.id}>
-              {workout.startTime.toLocaleString()} - {workout.duration} minutes
+              <strong>{workout.name}</strong> ({workout.type}) - {workout.duration} minutes (
+                {workout.exercises && workout.exercises.length} Exercises)
+              <br />
+              {workout.description && <p>Description: {workout.description}</p>}
+              {workout.notes && <p>Notes: {workout.notes}</p>}
             </li>
           ))}
         </ul>
+      </div>
+    );
+  };
+
+  const testFunction = () => {
+    return (
+      <div>
+        <h2>Previous Workouts</h2>
       </div>
     );
   };
