@@ -1,0 +1,180 @@
+/* background-image: url('../../assets/images/sport.png'); Update with your image */
+.main-content h1 {
+  font-size: 70px;
+  margin-bottom: 20px;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-weight: bold;
+}
+
+.main-content p {
+  font-size: 25px;
+  margin-bottom: 30px;
+  font-weight: bold;
+}
+.sign-up-button {
+  font-weight: bold;
+  font-family: "Poppins";
+  background-image: linear-gradient(
+    to right,
+    #c9f24d,
+    #a4ca33
+  ); /* Gradient background */
+  color: black;
+  border: none;
+  padding: 15px 40px;
+  font-size: 20px;
+  cursor: pointer;
+  border-radius: 25px;
+}
+.navbar-links {
+  list-style: none;
+  display: flex;
+  font-family: "Poppins";
+}
+
+.navbar-links li a {
+  font-family: "Poppins";
+  color: white;
+  text-decoration: none;
+  margin: 0 10px;
+}
+.button:hover {
+  background-image: linear-gradient(
+    to right,
+    #a4ca33,
+    #c9f24d
+  ); /* Gradient background */
+}
+.start-button {
+  font-family: "Poppins", sans-serif; /* assuming you have imported Poppins */
+  font-weight: bold;
+  color: black; /* Text color */
+  padding: 10px 20px; /* Button padding */
+  font-size: 16px; /* Text size */
+  border: none; /* No border */
+  cursor: pointer; /* Cursor indicates it's clickable */
+  border-radius: 25px; /* Rounded corners */
+  background-image: linear-gradient(
+    to right,
+    #c9f24d,
+    #a4ca33
+  ); /* Gradient background */
+  display: inline-flex; /* Use flexbox for alignment */
+  align-items: center; /* Center items vertically */
+  justify-content: center; /* Center text horizontally */
+  position: relative; /* Allows absolute positioning of the icon relative to the button */
+  gap: 10px; /* Space between text and icon */
+}
+
+.start-button svg {
+  width: 30px;
+  height: 30px;
+}
+/* This sets the background of the entire page to black */
+body {
+  background-color: black;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.image-section {
+  position: absolute;
+  top: 0;
+  margin-left: 20%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* z-index: 9999; Ensures the image is behind the text content */
+}
+.navbar {
+  position: fixed;
+  top: 0; /* Aligns the navbar to the top of the viewport */
+  left: 0; /* Aligns the navbar to the left of the viewport */
+  width: 98%; /* Ensures the navbar spans the full width of the screen */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: transparent; /* Change the color as required */
+  color: white;
+  z-index: 1000; /* Ensures the navbar stays above other content */
+}
+.top-image {
+  width: 100%;
+  height: auto; /* Adjust the height automatically to maintain aspect ratio */
+  object-fit: cover; /* Ensures the image covers the given area without stretching */
+  display: block; /* Removes any extra space below the image */
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  /* z-index can be omitted if not needed for layering */
+}
+
+.image-section img {
+  width: 100%;
+  height: 100%; /* Adjusts to cover the full height */
+  object-fit: cover; /* Ensures the image covers the area without distorting aspect ratio */
+}
+html {
+  scroll-behavior: smooth;
+}
+.text-section p1 {
+  font-size: 50px;
+  font-weight: bold;
+  line-height: 0;
+  color: white;
+}
+.text-section p {
+  font-size: 20px;
+  color: white;
+}
+
+.text-section {
+  flex: 1;
+  text-align: left; /* Align text to the left */
+  font-family: "Poppins";
+  position: relative;
+  z-index: 1; /* Ensures text section is above the image */
+  text-align: left; /* Aligns the text to the left */
+  /* padding-left: 20px; Left padding to control horizontal position */
+  width: 100%;
+  margin-top: 0; /* Adjust if you want to move the text-section up or down */
+  margin-left: 10%; /* Adjust if you want to move the text-section more to the left */
+  margin-bottom: 0%;
+  height: 100%; /* Takes the full height of its parent */
+}
+.button:hover {
+  background-color: #a4ca33; /* Green */
+  color: black;
+}
+
+.main-content {
+  position: relative; /* Needed for absolute positioning of the background image */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Ensures the div takes at least the height of the viewport */
+
+  padding: 50px;
+}
+.main-content::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  background-size: cover;
+  background-position: center;
+  opacity: 0.5; /* Adjust the opacity to show some of the black background */
+  z-index: -1; /* Ensure the image is behind the content */
+}
+.background-div {
+  background-color: #000; /* Solid color */
+  height: 100vh;
+  width: 100%;
+}
