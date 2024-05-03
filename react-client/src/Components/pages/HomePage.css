@@ -26,6 +26,22 @@
   font-size: 20px;
   cursor: pointer;
   border-radius: 25px;
+  margin-right: 30px;
+}
+.log-in-button {
+  font-weight: bold;
+  font-family: "Poppins";
+  background-image: linear-gradient(
+    to right,
+    #c9f24d,
+    #a4ca33
+  ); /* Gradient background */
+  color: black;
+  border: none;
+  padding: 15px 40px;
+  font-size: 20px;
+  cursor: pointer;
+  border-radius: 25px;
 }
 .navbar-links {
   list-style: none;
@@ -177,4 +193,75 @@ html {
   background-color: #000; /* Solid color */
   height: 100vh;
   width: 100%;
+}
+
+/* Style the dropdown button */
+.dropbtn {
+  font-weight: bold;
+  font-family: "Poppins";
+  background-image: linear-gradient(
+    to right,
+    #c9f24d,
+    #a4ca33
+  ); /* Gradient background */
+  color: black;
+  border: none;
+  padding: 15px 40px;
+  font-size: 20px;
+  cursor: pointer;
+  border-radius: 25px;
+  margin-right: 100px;
+}
+
+.dropbtn:hover {
+  background-image: linear-gradient(
+    to right,
+    #a4ca33,
+    #c9f24d
+  );
+}
+
+/* Dropdown container */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown content */
+.dropdown-content {
+  position: absolute;
+  min-width: 160px;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  border-radius: 8px;
+}
+
+.dropdown-content button {
+  font-weight: bold;
+  font-family: "Poppins";
+  background-image: linear-gradient(
+    to right,
+    #c9f24d,
+    #a4ca33
+  ); /* Gradient background */
+  color: black;
+  border: none;
+  padding: 10px 30px;
+  font-size: 20px;
+  cursor: pointer;
+  border-radius: 25px;
+  margin-right: 100px;
+}
+
+.dropdown-content button:hover {
+  background-image: linear-gradient(
+    to right,
+    #a4ca33,
+    #c9f24d
+  );
+}
+
+/* Display dropdown content when open */
+.dropdown .dropdown-content {
+  display: block;
 }

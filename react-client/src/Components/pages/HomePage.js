@@ -1,8 +1,48 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./HomePage.css";
 import sportImage from "../../assets/images/file.png"; // Correct the import path
+import SignUpModal from './SignUpModal';
+import LoginModal from './LogInModal';
+import UserContext from '../UserContext';
 
 function HomePage() {
+  const { userData, setUserData } = React.useContext(UserContext);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [showSignUpModal, setShowSignUpModal] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const handleOpenSignUpModal = () => {
+    setShowSignUpModal(true);
+  };
+
+  const handleCloseSignUpModal = () => {
+    setShowSignUpModal(false);
+  };
+
+  const handleOpenLoginModal = () => {
+    setShowLoginModal(true);
+  };
+
+  const handleCloseLoginModal = () => {
+    setShowLoginModal(false);
+  };
+
+  const handleLogin = () => {
+    setLoggedIn(true);
+    handleCloseLoginModal();
+  };
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+
+  const handleLogout = () => {
+    setLoggedIn(false);
+    setUserData(null);
+    setDropdownOpen(false);
+  };
+
   return (
     <div className="main-content">
       <div className="image-section">
@@ -21,7 +61,31 @@ function HomePage() {
             <a href="#about">About</a>
           </li>
         </ul>
-        <button className="sign-up-button button">Sign Up</button>
+        <div>
+            {/* Conditional Rendering based on login state */}
+            {!loggedIn ? (
+                <>
+                    <button className="sign-up-button button" onClick={handleOpenSignUpModal}>Sign Up</button>
+                    {showSignUpModal && <SignUpModal onClose={handleCloseSignUpModal} />}
+                    <button className="log-in-button button" onClick={handleOpenLoginModal}>Log In</button>
+                    {showLoginModal && <LoginModal onClose={handleLogin}/>}
+                </>
+            ) : (
+                <div>
+                <button className="dropbtn" onClick={toggleDropdown}>
+                  {userData.name}
+                </button>
+                {dropdownOpen && (
+                  <div id = "myDropdown" className="dropdown-content">
+                    <button onClick={handleLogout}>
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+        </div>
+        
       </nav>
       <div className="text-section">
         <p1>MyFit</p1>
