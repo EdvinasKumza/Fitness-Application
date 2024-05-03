@@ -29,8 +29,8 @@ function HomePage() {
   };
 
   const handleLogin = () => {
-    setLoggedIn(true);
     handleCloseLoginModal();
+    setLoggedIn(true);
   };
 
   const toggleDropdown = () => {
@@ -68,7 +68,7 @@ function HomePage() {
                     <button className="sign-up-button button" onClick={handleOpenSignUpModal}>Sign Up</button>
                     {showSignUpModal && <SignUpModal onClose={handleCloseSignUpModal} />}
                     <button className="log-in-button button" onClick={handleOpenLoginModal}>Log In</button>
-                    {showLoginModal && <LoginModal onClose={handleLogin}/>}
+                    {showLoginModal && <LoginModal onClose={handleCloseLoginModal} onLogin={handleLogin}/>}
                 </>
             ) : (
                 <div>

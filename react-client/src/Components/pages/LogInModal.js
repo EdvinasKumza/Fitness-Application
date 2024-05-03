@@ -2,7 +2,7 @@ import React from 'react';
 import './SignUpModal.css';
 import UserContext from '../UserContext';
 
-function LogInModal({ onClose }) {
+function LogInModal({ onClose, onLogin}) {
   const { setUserData } = React.useContext(UserContext);
 
   const handleSubmit = async (event) => {
@@ -32,11 +32,13 @@ function LogInModal({ onClose }) {
       if (response.ok) {
         const data = await response.json();
         setUserData(data);
-        onClose();
+        onLogin();
       }
       else {
         throw new Error('Login request failed');
       }
+
+      onClose();
 
     } catch (error) {
       // Handle error here
