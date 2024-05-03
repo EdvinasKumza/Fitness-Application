@@ -367,5 +367,5 @@ FodyWeavers.xsd
 # Misc
 **/client/src/app/generated/
 
-#package-lock
-react-client/package-lock.json
+# Mac
+.DS_Store
