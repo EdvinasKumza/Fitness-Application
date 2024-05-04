@@ -13,7 +13,9 @@ public class WorkoutService : IWorkoutService
 
     public async Task<Workout> StartWorkoutAsync()
     {
-        var newWorkout = new Workout { StartDate = DateTime.UtcNow };
+        //TODO: Make the name automatically set to WorkoutINDEX
+        var newWorkout = new Workout { StartDate = DateTime.UtcNow, Name = "New Workout", Duration = 0, Type = "Custom"  };
+
         await _workoutRepository.AddWorkoutAsync(newWorkout);
         return newWorkout;
     }

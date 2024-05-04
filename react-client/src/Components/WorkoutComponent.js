@@ -5,9 +5,10 @@ const WorkoutTracker = () => {
   const [workoutId, setWorkoutId] = useState(null);
   const [exercises, setExercises] = useState([]);
   const [previousWorkouts, setPreviousWorkouts] = useState([]);
+  const [exercisesList, setExercisesList] = useState([]);
 
   useEffect(() => {
-    // Fetch previous workouts on component mount
+    fetchExercises();
     fetchPreviousWorkouts();
   }, []);
 
@@ -16,6 +17,14 @@ const WorkoutTracker = () => {
     await testFunction();
     const data = await response.json();
     setPreviousWorkouts(data);
+  };
+
+  const fetchExercises = async () => {
+    //TODO: Implement in backend
+
+    // const response = await fetch('/api/exercises');
+    // const data = await response.json();
+    // setExercisesList(data);
   };
 
   const startWorkout = async () => {
@@ -35,6 +44,7 @@ const WorkoutTracker = () => {
     await fetch(`http://localhost:5260/api/workouts/${workoutId}`, { method: 'PUT' });
     setIsWorkoutActive(false);
     setExercises([]); // Clear exercises after ending workout
+    window.location.reload();
   };
 
   const renderWorkoutControls = () => {
