@@ -1,5 +1,6 @@
 import React from 'react';
 import './SignUpModal.css';
+import { toast } from 'react-toastify';
 
 function SignUpModal({ onClose }) {
   const handleSubmit = async (event) => {
@@ -25,19 +26,19 @@ function SignUpModal({ onClose }) {
 
       // Check if request was successful
       if (response.status === 409) {
-        alert('Email already exists');
+        toast.error('Email already exists');
         return;
       }
 
       // Check if request was successful
-      if (!response.ok) {
+      if (response.ok) {
+        toast.success('Account created successfully');
+      } else {
         throw new Error('Signup request failed');
       }
 
-      // Handle successful request here, then close the modal
       onClose();
     } catch (error) {
-      // Handle error here
       console.error(error);
     }
   };

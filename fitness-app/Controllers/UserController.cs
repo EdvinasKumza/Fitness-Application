@@ -2,6 +2,11 @@ using Microsoft.AspNetCore.Mvc;
 using EntityFrameworkCore.MySQL.Data;
 using Microsoft.EntityFrameworkCore;
 using FitnessApp.Utils;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using DotNetEnv;
 namespace FitnessApp.Controllers;
 
 [ApiController]
@@ -37,53 +42,43 @@ public class UserController : ControllerBase
         return Ok(user);
     }
 
+    private readonly string jwtSecretKey = Environment.GetEnvironmentVariable("JWT_SECRET");
+
     [HttpPost("login")]
     public IActionResult Login([FromBody] LoginModel login)
     {
-        //print to console
         Console.WriteLine("Login: " + login.Email);
-        // Fetch user from the database by email
+
         var user = _appDbContext.Users.FirstOrDefault(u => u.Email == login.Email);
         if (user == null || !Utils.Utils.VerifyPassword(login.Password, user.Password))
         {
-            // Return Unauthorized if the user isn't found or the password is incorrect
             return Unauthorized("Invalid credentials");
         }
 
-        HttpContext.Session.SetInt32("UserID", user.Id);
+        // Create JWT token
+        var claims = new[] {
+            new Claim(ClaimTypes.Name, user.Name),
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(ClaimTypes.Email, user.Email)
+        };
+        
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecretKey));
+        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-        return Ok(new {
-            Message = "Login successful",
-            UserId = user.Id,
-            Name = user.Name,
-            Email = user.Email
-        });
-    }
+        var token = new JwtSecurityToken(
+            issuer: "localhost:5260",
+            audience: "localhost:5260",
+            claims: claims,
+            expires: DateTime.Now.AddMinutes(30),
+            signingCredentials: creds
+        );
 
-    [HttpGet("me")]
-    public IActionResult GetCurrentUser()
-    {
-        Console.WriteLine("Get Current User");
-        // Get the user ID from session
-        var userId = HttpContext.Session.GetInt32("UserID");
-        if (userId == null)
-        {
-            return Unauthorized("User not logged in");
-        }
+        var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
 
-        // Find the user in the database
-        var user = _appDbContext.Users.FirstOrDefault(u => u.Id == userId);
-        if (user == null)
-        {
-            return NotFound("User not found");
-        }
-
-        // Return the user data (excluding sensitive information)
         return Ok(new
         {
-            user.Id,
-            user.Name,
-            user.Email
+            Token = tokenString,
+            Name = user.Name
         });
     }
     

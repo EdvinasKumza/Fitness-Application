@@ -1,16 +1,36 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./HomePage.css";
 import sportImage from "../../assets/images/file.png"; // Correct the import path
 import SignUpModal from './SignUpModal';
 import LoginModal from './LogInModal';
-import UserContext from '../UserContext';
 
 function HomePage() {
-  const { userData, setUserData } = React.useContext(UserContext);
-  const [loggedIn, setLoggedIn] = useState(false);
   const [showSignUpModal, setShowSignUpModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const isTokenValid = () => {
+    // Get the token from localStorage
+    const token = localStorage.getItem('jwtToken');
+    
+    // Return false if no token is found
+    if (!token) return false;
+  
+    try {
+      // Decode the token payload
+      const base64Payload = token.split('.')[1];
+      const decodedPayload = JSON.parse(atob(base64Payload));
+  
+      // Check the expiration time
+      const exp = decodedPayload.exp;
+      const currentTime = Math.floor(Date.now() / 1000); // Convert to seconds
+  
+      return currentTime < exp; // Check if the current time is less than the expiration time
+    } catch (error) {
+      console.error('Invalid token:', error);
+      return false; // Token is invalid
+    }
+  };
 
   const handleOpenSignUpModal = () => {
     setShowSignUpModal(true);
@@ -28,20 +48,18 @@ function HomePage() {
     setShowLoginModal(false);
   };
 
-  const handleLogin = () => {
-    handleCloseLoginModal();
-    setLoggedIn(true);
-  };
-
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   };
 
   const handleLogout = () => {
-    setLoggedIn(false);
-    setUserData(null);
+    localStorage.removeItem('jwtToken');
+    localStorage.removeItem('name');
     setDropdownOpen(false);
   };
+
+  const tokenValid = isTokenValid();
+  const name = localStorage.getItem('name');
 
   return (
     <div className="main-content">
@@ -63,17 +81,17 @@ function HomePage() {
         </ul>
         <div>
             {/* Conditional Rendering based on login state */}
-            {!loggedIn ? (
+            {!tokenValid ? (
                 <>
                     <button className="sign-up-button button" onClick={handleOpenSignUpModal}>Sign Up</button>
                     {showSignUpModal && <SignUpModal onClose={handleCloseSignUpModal} />}
                     <button className="log-in-button button" onClick={handleOpenLoginModal}>Log In</button>
-                    {showLoginModal && <LoginModal onClose={handleCloseLoginModal} onLogin={handleLogin}/>}
+                    {showLoginModal && <LoginModal onClose={handleCloseLoginModal} />}
                 </>
             ) : (
                 <div>
                 <button className="dropbtn" onClick={toggleDropdown}>
-                  {userData.name}
+                  {name}
                 </button>
                 {dropdownOpen && (
                   <div id = "myDropdown" className="dropdown-content">

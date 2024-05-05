@@ -1,10 +1,9 @@
 import React from 'react';
 import './SignUpModal.css';
-import UserContext from '../UserContext';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-function LogInModal({ onClose, onLogin}) {
-  const { setUserData } = React.useContext(UserContext);
-
+function LogInModal({ onClose }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     // Gather form data
@@ -25,24 +24,28 @@ function LogInModal({ onClose, onLogin}) {
       });
 
       if (response.status === 401) {
-        alert('Invalid email or password');
+        toast.error('Invalid email or password');
         return;
       }
 
       if (response.ok) {
         const data = await response.json();
-        setUserData(data);
-        onLogin();
+
+        if (data.token) {
+            localStorage.setItem('jwtToken', data.token);
+            localStorage.setItem('name', data.name);
+            onClose();
+        } else {
+            throw new Error('No token received');
+        }
       }
       else {
         throw new Error('Login request failed');
       }
 
-      onClose();
-
     } catch (error) {
-      // Handle error here
       console.error(error);
+      toast.error('Invalid email or password');
     }
   };
 
