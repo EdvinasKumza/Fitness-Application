@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using DotNetEnv;
+using Microsoft.Extensions.DependencyModel;
+using FitnessApp.Services;
+using FitnessApp.Repositories;
 
 DotNetEnv.Env.Load();
 
@@ -55,6 +58,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddDistributedMemoryCache(); // For session storage
 builder.Services.AddControllersWithViews(); // Add MVC support
+
+builder.Services.AddScoped<IWorkoutService, WorkoutService>();
+builder.Services.AddScoped<IWorkoutRepository, WorkoutRepository>();
 
 var app = builder.Build();
 
