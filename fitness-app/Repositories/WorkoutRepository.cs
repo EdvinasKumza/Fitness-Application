@@ -38,9 +38,9 @@ public class WorkoutRepository : IWorkoutRepository
         return await _context.Workouts.FindAsync(workoutId);
     }
 
-    public async Task<List<Workout>> GetPreviousWorkoutsAsync()
+    public async Task<List<Workout>> GetPreviousWorkoutsAsync(int userId)
     {
-        return await _context.Workouts.OrderByDescending(w => w.StartDate).ToListAsync();
+        return await _context.Workouts.Where(w => w.UserId == userId).OrderByDescending(w => w.StartDate).ToListAsync();
     }
 
     public async Task<Workout> GetWorkoutDetailsAsync(int workoutId)
@@ -56,10 +56,16 @@ public class WorkoutRepository : IWorkoutRepository
                 Id = workout.Id,
                 StartDate = workout.StartDate,
                 Duration = workout.Duration,
-                Sets = workout.Sets.ToList()
+                Sets = workout.Sets.ToList(),
+                UserId = workout.UserId
             };
         }
 
         return null;
+    }
+
+    public async Task<User> GetUserAsync(User user)
+    {
+        return await _context.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
     }
 }

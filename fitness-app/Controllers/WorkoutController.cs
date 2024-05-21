@@ -1,28 +1,34 @@
 ﻿using FitnessApp.Model;
 using FitnessApp.Services;
 using Microsoft.AspNetCore.Mvc;
+using EntityFrameworkCore.MySQL.Data;
 
 namespace FitnessApp.Controllers;
 
+[ApiController]
+[Route("api/[controller]")]
 public class WorkoutController : ControllerBase
 {
     private readonly IWorkoutService _workoutService;
+    private readonly AppDbContext _appDbContext;
 
-    public WorkoutController(IWorkoutService workoutService)
+    public WorkoutController(IWorkoutService workoutService, AppDbContext appDbContext)
     {
         _workoutService = workoutService;
+        _appDbContext = appDbContext;
     }
 
     [HttpPost]
-    [Route("api/workouts/start")]
-    public async Task<IActionResult> StartWorkout()
+    [Route("start")]
+    public async Task<IActionResult> StartWorkout([FromBody] User user)
     {
-        var newWorkout = await _workoutService.StartWorkoutAsync();
+        var tempUser = await _workoutService.GetUserAsync(user);
+        var newWorkout = await _workoutService.StartWorkoutAsync(tempUser.Id);
         return Ok(newWorkout);
     }
 
     [HttpPost]
-    [Route("api/workouts/{workoutId}/sets")]
+    [Route("{workoutId}/sets")]
     public async Task<IActionResult> AddSet(int workoutId, [FromBody] Set set)
     {
         if (!ModelState.IsValid)
@@ -35,7 +41,7 @@ public class WorkoutController : ControllerBase
     }
 
     [HttpPut]
-    [Route("api/workouts/{workoutId}")]
+    [Route("{workoutId}")]
     public async Task<IActionResult> EndWorkout(int workoutId)
     {
         await _workoutService.EndWorkoutAsync(workoutId);
@@ -43,16 +49,20 @@ public class WorkoutController : ControllerBase
     }
 
     [HttpGet]
-    [Route("api/workouts")]
-    public async Task<IActionResult> GetPreviousWorkouts()
+    [Route("workouts")]
+    public async Task<IActionResult> GetPreviousWorkouts([FromBody] User user)
     {
-        var workouts = await _workoutService.GetPreviousWorkoutsAsync();
+        var tempUser = await _workoutService.GetUserAsync(user);
+        var workouts = await _workoutService.GetPreviousWorkoutsAsync(tempUser.Id);
+        tempUser.Workouts.AddRange(workouts);
+        _appDbContext.Users.Update(tempUser);
+        await _appDbContext.SaveChangesAsync();
         return Ok(workouts);
     }
 
     [HttpGet]
-    [Route("api/workouts/{workoutId}")]
-    public async Task<IActionResult> GetWorkout(int workoutId)
+    [Route("{workoutId}")]
+    public async Task<IActionResult> GetWorkout(int workoutId, [FromBody] User user)
     {
         var workout = await _workoutService.GetWorkoutAsync(workoutId);
         if (workout == null)
