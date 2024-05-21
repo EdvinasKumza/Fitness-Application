@@ -1,6 +1,6 @@
 import React from 'react';
 import WorkoutComponent from '../WorkoutComponent';
-import './TempWorkoutPage.css';
+//import './TempWorkoutPage.css'; //UNCOMMENT TO TEST THIS PAGE
 
 const WorkoutPage = () => {
 
