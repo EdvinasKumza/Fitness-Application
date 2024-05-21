@@ -14,7 +14,7 @@ public class WorkoutService : IWorkoutService
     public async Task<Workout> StartWorkoutAsync(int userId)
     {
         //TODO: Make the name automatically set to WorkoutINDEX
-        var newWorkout = new Workout { StartDate = DateTime.UtcNow, Name = "New Workout", Duration = 0, Type = "Custom", UserId = userId  };
+        var newWorkout = new Workout { StartDate = DateTime.UtcNow, Name = "New Workout", Duration = 0, Type = "Custom", UserId = userId };
 
         await _workoutRepository.AddWorkoutAsync(newWorkout);
         return newWorkout;
@@ -47,8 +47,4 @@ public class WorkoutService : IWorkoutService
         return workout;
     }
 
-    public async Task<User> GetUserAsync(User user)
-    {
-        return await _workoutRepository.GetUserAsync(user);
-    }
 }

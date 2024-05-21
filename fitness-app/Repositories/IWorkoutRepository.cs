@@ -10,5 +10,4 @@ public interface IWorkoutRepository
     Task<Workout> GetWorkoutAsync(int workoutId);
     Task<List<Workout>> GetPreviousWorkoutsAsync(int userId);
     Task<Workout> GetWorkoutDetailsAsync(int workoutId);
-    Task<User> GetUserAsync(User user);
 }

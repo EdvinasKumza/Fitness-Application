@@ -1,7 +1,8 @@
 import React from 'react';
 import WorkoutComponent from '../WorkoutComponent';
+import './TempWorkoutPage.css';
 
-const WorkoutTrackingPage = () => {
+const WorkoutPage = () => {
 
     return (
         <div>
@@ -11,4 +12,4 @@ const WorkoutTrackingPage = () => {
     );
 };
 
-export default WorkoutTrackingPage;
+export default WorkoutPage;

@@ -11,5 +11,4 @@ public interface IWorkoutService
     Task EndWorkoutAsync(int workoutId);
     Task<List<Workout>> GetPreviousWorkoutsAsync(int userId);
     Task<Workout> GetWorkoutAsync(int workoutId);
-    Task<User> GetUserAsync(User user);
 }

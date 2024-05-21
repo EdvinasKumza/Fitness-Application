@@ -3,11 +3,13 @@ import "./HomePage.css";
 import sportImage from "../../assets/images/file.png"; // Correct the import path
 import SignUpModal from './SignUpModal';
 import LoginModal from './LogInModal';
+import { useNavigate } from 'react-router-dom';
 
 function HomePage() {
   const [showSignUpModal, setShowSignUpModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const navigate = useNavigate();
 
   const isTokenValid = () => {
     // Get the token from localStorage
@@ -52,10 +54,15 @@ function HomePage() {
     setDropdownOpen(!dropdownOpen);
   };
 
+  const handleWorkoutsButton = () => {
+    navigate('/workouts');
+};
+
   const handleLogout = () => {
     localStorage.removeItem('jwtToken');
     localStorage.removeItem('name');
     setDropdownOpen(false);
+    window.location.reload();
   };
 
   const tokenValid = isTokenValid();
@@ -95,6 +102,9 @@ function HomePage() {
                 </button>
                 {dropdownOpen && (
                   <div id = "myDropdown" className="dropdown-content">
+                    <button onClick={handleWorkoutsButton}>
+                      Workouts
+                    </button>
                     <button onClick={handleLogout}>
                       Logout
                     </button>

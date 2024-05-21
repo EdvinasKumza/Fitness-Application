@@ -64,8 +64,4 @@ public class WorkoutRepository : IWorkoutRepository
         return null;
     }
 
-    public async Task<User> GetUserAsync(User user)
-    {
-        return await _context.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
-    }
 }

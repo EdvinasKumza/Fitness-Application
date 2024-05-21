@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const WorkoutTracker = () => {
+const WorkoutComponent = () => {
   const [isWorkoutActive, setIsWorkoutActive] = useState(false);
   const [workoutId, setWorkoutId] = useState(null);
   const [exercises, setExercises] = useState([]);
@@ -13,22 +13,33 @@ const WorkoutTracker = () => {
   }, []);
 
   const fetchPreviousWorkouts = async () => {
-    const response = await fetch('http://localhost:5260/api/workouts');
-    await testFunction();
-    const data = await response.json();
-    setPreviousWorkouts(data);
+    var jwt_token = localStorage.getItem('jwtToken');
+    const response = await fetch('http://localhost:5260/api/workouts', {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${jwt_token}`
+        },
+    });
+    if(response.ok){
+      const data = await response.json();
+      setPreviousWorkouts(data);
+    }
   };
 
   const fetchExercises = async () => {
-    //TODO: Implement in backend
-
-    // const response = await fetch('/api/exercises');
-    // const data = await response.json();
-    // setExercisesList(data);
+    const response = await fetch('/api/exercises');
+    const data = await response.json();
+    setExercisesList(data);
   };
 
   const startWorkout = async () => {
-    const response = await fetch('http://localhost:5260/api/workouts/start', { method: 'POST' });
+    var jwt_token = localStorage.getItem('jwtToken');
+    const response = await fetch('http://localhost:5260/api/workouts/start', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${jwt_token}`
+      },
+    });
     const data = await response.json();
     setIsWorkoutActive(true);
     setWorkoutId(data.id); // Update state with newly created workout ID
@@ -82,14 +93,6 @@ const WorkoutTracker = () => {
     );
   };
 
-  const testFunction = () => {
-    return (
-      <div>
-        <h2>Previous Workouts</h2>
-      </div>
-    );
-  };
-
   return (
     <div className="workout-tracker">
       {renderWorkoutControls()}
@@ -115,4 +118,4 @@ const ExerciseList = ({ exercises, onAddExercise }) => {
   );
 };
 
-export default WorkoutTracker;
+export default WorkoutComponent;
