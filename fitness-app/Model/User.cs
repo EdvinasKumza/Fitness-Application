@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
+namespace FitnessApp.Model;
+
 public class User
 {
     [Key]
@@ -13,4 +15,5 @@ public class User
     public string Password { get; set; }
     [Required]
     public int Age {get; set; }
+    public List<Workout>? Workouts { get; set; }
 } 

@@ -2,6 +2,8 @@
 using FitnessApp.Services;
 using Microsoft.AspNetCore.Mvc;
 
+namespace FitnessApp.Controllers;
+
 public class WorkoutController : ControllerBase
 {
     private readonly IWorkoutService _workoutService;

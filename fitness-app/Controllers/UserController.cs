@@ -1,3 +1,4 @@
+using FitnessApp.Model;
 using Microsoft.AspNetCore.Mvc;
 using EntityFrameworkCore.MySQL.Data;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,7 @@ using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using DotNetEnv;
+
 namespace FitnessApp.Controllers;
 
 [ApiController]
