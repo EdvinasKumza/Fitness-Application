@@ -25,7 +25,7 @@ public class ExerciseController : ControllerBase
     }*/
 
     [HttpGet]
-    [Route("exercises")]
+    [Route("getexercises")]
     public IActionResult GetExercises()
     {
         var exercises = _appDbContext.Exercises.ToList();

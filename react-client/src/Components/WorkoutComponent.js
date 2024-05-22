@@ -6,6 +6,7 @@ const WorkoutComponent = () => {
   const [exercises, setExercises] = useState([]);
   const [previousWorkouts, setPreviousWorkouts] = useState([]);
   const [exercisesList, setExercisesList] = useState([]);
+  const [selectedExercise, setSelectedExercise] = useState(null);
 
   useEffect(() => {
     fetchExercises();
@@ -27,7 +28,7 @@ const WorkoutComponent = () => {
   };
 
   const fetchExercises = async () => {
-    const response = await fetch('/api/exercises');
+    const response = await fetch('/api/exercises/getexercises');
     const data = await response.json();
     setExercisesList(data);
   };
@@ -45,10 +46,10 @@ const WorkoutComponent = () => {
     setWorkoutId(data.id); // Update state with newly created workout ID
   };
 
-  const addExercise = (exercise) => {
-    // Implement logic to send a POST request with exercise details to the backend API
-    // Update the exercises state locally as well (for immediate UI update)
-    setExercises([...exercises, exercise]);
+  const addExercise = () => {
+    if (!selectedExercise) return;
+    setExercises([...exercises, selectedExercise]);
+    setSelectedExercise(null);
   };
 
   const endWorkout = async () => {
@@ -63,7 +64,17 @@ const WorkoutComponent = () => {
       return (
         <div>
           <h2>Exercises</h2>
-          <ExerciseList exercises={exercises} onAddExercise={addExercise} />
+          <select value={selectedExercise?.id} onChange={(e) => setSelectedExercise(exercisesList.find(ex => ex.id === parseInt(e.target.value)))}>
+            <option value="">Select Exercise</option>
+            {exercisesList.map((exercise) => (
+              <option key={exercise.id} value={exercise.id}>
+                {exercise.name}
+              </option>
+            ))}
+          </select>
+          <button onClick={addExercise} disabled={!selectedExercise}>
+            Add Exercise
+          </button>
           <button onClick={endWorkout}>End Workout</button>
         </div>
       );
