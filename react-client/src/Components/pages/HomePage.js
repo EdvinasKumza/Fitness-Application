@@ -54,9 +54,13 @@ function HomePage() {
     setDropdownOpen(!dropdownOpen);
   };
 
+  const handleGoalsButton = () => {
+    navigate('/goals');
+  };
+
   const handleWorkoutsButton = () => {
     navigate('/workouts');
-};
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('jwtToken');
@@ -104,6 +108,9 @@ function HomePage() {
                   <div id = "myDropdown" className="dropdown-content">
                     <button onClick={handleWorkoutsButton}>
                       Workouts
+                    </button>
+                    <button onClick={handleGoalsButton}>
+                      Goals
                     </button>
                     <button onClick={handleLogout}>
                       Logout

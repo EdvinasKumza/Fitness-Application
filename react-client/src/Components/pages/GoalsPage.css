@@ -1,0 +1,74 @@
+/* Styles for the goals setting area */
+.goal-setting-area {
+    color: #d4d4d4; /* Light gray text for better visibility on dark backgrounds */
+    padding: 20px;
+    background-color: #333; /* Dark background for the section */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    margin: 20px auto;
+    max-width: 600px;
+}
+
+.goal-setting-area label {
+    margin-bottom: 10px; /* Spacing below labels */
+    color: #9cef9c; /* Soft green for labels */
+    font-size: 16px; /* Increased font size for readability */
+    display: block; /* Ensures label takes the full width */
+}
+
+.goal-setting-area select,
+.goal-setting-area input[type="number"] {
+    width: 100%; /* Full width of the container */
+    padding: 8px; /* Padding for better text input visibility */
+    margin-bottom: 15px; /* Space below inputs */
+    background-color: #242424; /* Slightly lighter dark background for inputs */
+    border: 2px solid #555; /* Subtle border for inputs */
+    border-radius: 4px; /* Matching rounded corners */
+    color: #fff; /* White text color */
+}
+
+#set-goal {
+    width: 100%; /* Full width button */
+    padding: 10px; /* Padding for a better click area */
+    background-color: #4CAF50; /* Green background */
+    color: #fff; /* White text */
+    border: none; /* No border */
+    border-radius: 4px; /* Rounded corners for the button */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+.goal-setting-area button:hover {
+    background-color: #367c39; /* Darker green on hover */
+}
+
+.goal-setting-area ul {
+    list-style: none; /* Remove default list styling */
+    padding: 0; /* Remove default padding */
+}
+
+.goal-setting-area li {
+    padding: 8px; /* Padding for each list item */
+    border-bottom: 1px solid #444; /* Subtle separator for items */
+}
+
+.goal-setting-area li:last-child {
+    border-bottom: none; /* No border on the last item */
+}
+
+.goal-setting-area h3 {
+    margin-top: 20px; /* Space above the section heading */
+    color: #adebad; /* Lighter green for heading */
+}
+
+.navbar-links li button {
+    font-family: "Poppins";
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-size: 16px;
+}
