@@ -11,10 +11,10 @@ public class WorkoutService : IWorkoutService
         _workoutRepository = workoutRepository;
     }
 
-    public async Task<Workout> StartWorkoutAsync()
+    public async Task<Workout> StartWorkoutAsync(int userId)
     {
         //TODO: Make the name automatically set to WorkoutINDEX
-        var newWorkout = new Workout { StartDate = DateTime.UtcNow, Name = "New Workout", Duration = 0, Type = "Custom"  };
+        var newWorkout = new Workout { StartDate = DateTime.UtcNow, Name = "New Workout", Duration = 0, Type = "Custom", UserId = userId };
 
         await _workoutRepository.AddWorkoutAsync(newWorkout);
         return newWorkout;
@@ -36,9 +36,9 @@ public class WorkoutService : IWorkoutService
         }
     }
 
-    public async Task<List<Workout>> GetPreviousWorkoutsAsync()
+    public async Task<List<Workout>> GetPreviousWorkoutsAsync(int userId)
     {
-        return await _workoutRepository.GetPreviousWorkoutsAsync();
+        return await _workoutRepository.GetPreviousWorkoutsAsync(userId);
     }
 
     public async Task<Workout> GetWorkoutAsync(int workoutId)
@@ -46,4 +46,5 @@ public class WorkoutService : IWorkoutService
         var workout = await _workoutRepository.GetWorkoutDetailsAsync(workoutId);
         return workout;
     }
+
 }

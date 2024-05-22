@@ -11,6 +11,8 @@ public class Workout
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
     [Required]
+    public int UserId { get; set; }
+    [Required]
     public string Name { get; set; }
     public List<Set>? Sets { get; set; }
     [Required]

@@ -1,21 +1,48 @@
 ﻿using FitnessApp.Model;
 using FitnessApp.Services;
 using Microsoft.AspNetCore.Mvc;
+using EntityFrameworkCore.MySQL.Data;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Web;
+using Microsoft.AspNetCore.Authentication;
 
-public class WorkoutController : ControllerBase
+namespace FitnessApp.Controllers;
+
+public class WorkoutsController : ControllerBase
 {
     private readonly IWorkoutService _workoutService;
+    private readonly AppDbContext _appDbContext;
 
-    public WorkoutController(IWorkoutService workoutService)
+    public WorkoutsController(IWorkoutService workoutService, AppDbContext appDbContext)
     {
         _workoutService = workoutService;
+        _appDbContext = appDbContext;
     }
 
     [HttpPost]
     [Route("api/workouts/start")]
-    public async Task<IActionResult> StartWorkout()
+    public async Task<IActionResult> StartWorkout([FromHeader] string Authorization)
     {
-        var newWorkout = await _workoutService.StartWorkoutAsync();
+        var jwtToken = Authorization.Split(" ")[1];
+        var handler = new JwtSecurityTokenHandler();
+        var token = handler.ReadJwtToken(jwtToken);
+        var userId = -1;
+        var claims = token.Claims.Select(claim => (claim.Type, claim.Value)).ToList();
+        userId = int.Parse(claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
+
+        Console.WriteLine("userid" + userId);
+
+        if (userId == -1)
+        {
+            return BadRequest("Invalid or missing JWT token");
+        }
+
+        var newWorkout = await _workoutService.StartWorkoutAsync(userId);
         return Ok(newWorkout);
     }
 
@@ -42,9 +69,30 @@ public class WorkoutController : ControllerBase
 
     [HttpGet]
     [Route("api/workouts")]
-    public async Task<IActionResult> GetPreviousWorkouts()
+    public async Task<IActionResult> GetPreviousWorkouts([FromHeader] string Authorization)
     {
-        var workouts = await _workoutService.GetPreviousWorkoutsAsync();
+        var jwtToken = Authorization.Split(" ")[1];
+        var handler = new JwtSecurityTokenHandler();
+        var token = handler.ReadJwtToken(jwtToken);
+        var userId = -1;
+        var claims = token.Claims.Select(claim => (claim.Type, claim.Value)).ToList();
+        userId = int.Parse(claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
+
+        if (userId == -1)
+        {
+            return BadRequest("Invalid or missing JWT token");
+        }
+
+        var user = await _appDbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+        var workouts = await _workoutService.GetPreviousWorkoutsAsync(userId);
+        if(workouts == null)
+        {
+            return NotFound();
+        }
+        user.Workouts = workouts;
+        _appDbContext.Users.Update(user);
+        await _appDbContext.SaveChangesAsync();
         return Ok(workouts);
     }
 
