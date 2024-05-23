@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import HeaderComponent from './HeaderComponent';
+import { useNavigate } from 'react-router-dom';
 
 const WorkoutComponent = () => {
   const [isWorkoutActive, setIsWorkoutActive] = useState(false);
@@ -8,6 +9,8 @@ const WorkoutComponent = () => {
   const [previousWorkouts, setPreviousWorkouts] = useState([]);
   const [exercisesList, setExercisesList] = useState([]);
   const [selectedExercise, setSelectedExercise] = useState(null);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     fetchExercises();
@@ -67,6 +70,35 @@ const WorkoutComponent = () => {
     window.location.reload();
   };
 
+  const handleRepsChange = (exerciseId, setId, newReps) => {
+    // Update the reps value for the specific set within the exercises state
+    setExercises((prevState) => {
+      const updatedExercises = [...prevState];
+      const exerciseIndex = updatedExercises.findIndex((ex) => ex.id === exerciseId);
+      const setIndex = updatedExercises[exerciseIndex].sets.findIndex((set) => set.id === setId);
+      updatedExercises[exerciseIndex].sets[setIndex].reps = newReps;
+      return updatedExercises;
+    });
+  };
+  
+  const handleWeightChange = (exerciseId, setId, newWeight) => {
+    // Update the weight value for the specific set within the exercises state
+    // Similar logic to handleRepsChange
+  };
+  
+  const handleAddSet = (exerciseId) => {
+    // Update the exercises state to include a new set object for the exercise
+    setExercises((prevState) => {
+      const updatedExercises = [...prevState];
+      const exerciseIndex = updatedExercises.findIndex((ex) => ex.id === exerciseId);
+      if (!updatedExercises[exerciseIndex].sets) {
+        updatedExercises[exerciseIndex].sets = [];
+      }
+      updatedExercises[exerciseIndex].sets.push({ id: Math.random(), setNumber: updatedExercises[exerciseIndex].sets?.length + 1, reps: '', weight: '' });
+      return updatedExercises;
+    });
+  };
+
   const isTokenValid = () => {
     // Get the token from localStorage
     const token = localStorage.getItem('jwtToken');
@@ -91,11 +123,33 @@ const WorkoutComponent = () => {
   };
 
   const tokenValid = isTokenValid();
+  const name = localStorage.getItem('name');
+
+  if (!tokenValid) {
+    navigate('/');
+    return null;
+  }
+
   const renderWorkoutControls = () => {
     if (isWorkoutActive) {
       return (
         <div className="workout-tracker-area">
           <h2>Exercises</h2>
+          <ul>
+          {exercises.map((exercise) => (
+            <li key={exercise.id}>
+            {exercise.name}
+            {exercise.sets?.map((set) => (
+              <div key={set.id}>
+                <span>Set: {set.setNumber}</span>
+                <input type="number" min="1" value={set.reps} onChange={(e) => handleRepsChange(exercise.id, set.id, e.target.value)} />
+                <input type="number" min="0" value={set.weight} onChange={(e) => handleWeightChange(exercise.id, set.id, e.target.value)} />
+              </div>
+            ))}
+            <button onClick={() => handleAddSet(exercise.id)}>Add Set</button>
+          </li>
+          ))}
+          </ul>
           <select
             value={selectedExercise ? selectedExercise.id : ''}
             onChange={(e) =>
