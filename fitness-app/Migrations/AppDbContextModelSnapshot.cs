@@ -61,6 +61,9 @@ namespace FitnessApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("ExerciseId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("Target")
                         .HasColumnType("INTEGER");
 

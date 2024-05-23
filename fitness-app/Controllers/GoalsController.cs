@@ -33,6 +33,12 @@ public class GoalsController : ControllerBase
 
         goal.UserId = userId;
 
+        var exercise = await _appDbContext.Exercises.FirstOrDefaultAsync(e => e.Name == goal.Type);
+        if (exercise != null)
+        {
+            goal.ExerciseId = exercise.Id;
+        }
+
         var existingGoal = await _appDbContext.Goals.FirstOrDefaultAsync(g => g.UserId == userId && g.Type == goal.Type);
         if (existingGoal != null)
         {

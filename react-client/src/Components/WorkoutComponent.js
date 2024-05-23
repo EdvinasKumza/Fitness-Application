@@ -72,7 +72,6 @@ const WorkoutComponent = () => {
           <select value={selectedExercise?.id} 
                   onChange={(e) => setSelectedExercise(exercisesList.find(ex => ex.id === parseInt(e.target.value)))}>
             <option value="">Select Exercise</option>
-            <option value="TEST">TEST TEST TEST</option>
             {exercisesList.map((exercise) => (
               <option key={exercise.id} value={exercise.id}>
                 {exercise.name}

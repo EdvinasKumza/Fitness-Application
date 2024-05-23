@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FitnessApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240522103657_Goals")]
+    [Migration("20240523095243_Goals")]
     partial class Goals
     {
         /// <inheritdoc />
@@ -62,6 +62,9 @@ namespace FitnessApp.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ExerciseId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("Target")
