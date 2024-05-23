@@ -19,10 +19,15 @@ const GoalsComponent = () => {
     }, []);
 
     const fetchExercises = async () => {
-        const response = await fetch('/api/exercises/getexercises');
+        const response = await fetch('http://localhost:5260/api/getexercises', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
         const data = await response.json();
         setExercisesList(data);
-    };
+      };
 
     const fetchGoals = async () => {
         var jwt_token = localStorage.getItem('jwtToken');
@@ -61,6 +66,10 @@ const GoalsComponent = () => {
 
     const handleWorkoutsButton = () => {
         navigate('/workouts');
+    };
+
+    const handleProgressButton = () => {
+        navigate('/progress');
     };
 
     const handleLogout = () => {
@@ -174,6 +183,9 @@ const GoalsComponent = () => {
                                 <button onClick={handleGoalsButton}>
                                     Goals
                                 </button>
+                                <button onClick={handleProgressButton}>
+                                    Progress
+                                </button>
                                 <button onClick={handleLogout}>
                                     Logout
                                 </button>
@@ -189,14 +201,8 @@ const GoalsComponent = () => {
                     <label htmlFor="exercise" >Exercise:</label>
                     <select id="exercise" value={exercise} onChange={handleExerciseChange}>
                         <option value="">Select Exercise</option>
-                        <option value="THIS IS FOR TEST1">THIS IS FOR TEST1</option>
-                        <option value="THIS IS FOR TEST2">THIS IS FOR TEST2</option>
-                        <option value="THIS IS FOR TEST3">THIS IS FOR TEST3</option>
-                        <option value="THIS IS FOR TEST4">THIS IS FOR TEST4</option>
-                        <option value="THIS IS FOR TEST5">THIS IS FOR TEST5</option>
-                        <option value="THIS IS FOR TEST6">THIS IS FOR TEST6</option>
                         {exercisesList.map((exercise) => (
-                            <option key={exercise.id} value={exercise.id}>
+                            <option key={exercise.id} value={exercise.name}>
                                 {exercise.name}
                             </option>
                         ))}

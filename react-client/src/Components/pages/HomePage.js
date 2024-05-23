@@ -71,6 +71,10 @@ function HomePage() {
     navigate('/workouts');
   };
 
+  const handleProgressButton = () => {
+    navigate('/progress');
+  };
+
   const handleLogout = () => {
     localStorage.removeItem('jwtToken');
     localStorage.removeItem('name');
@@ -120,6 +124,9 @@ function HomePage() {
                     </button>
                     <button onClick={handleGoalsButton}>
                       Goals
+                    </button>
+                    <button onClick={handleProgressButton}>
+                      Progress
                     </button>
                     <button onClick={handleLogout}>
                       Logout
