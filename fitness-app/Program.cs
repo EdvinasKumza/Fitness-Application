@@ -12,6 +12,21 @@ DotNetEnv.Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
+var configuration = builder.Configuration;
+
+var logFilePath = configuration["Logging:FileLogging:Path"];
+builder.Services.AddSingleton<ICustomLogger>(new CustomLogger(logFilePath));
+
+var isLoggingEnabled = configuration.GetValue<bool>("Logging:FileLogging:Enabled");
+
+builder.Services.AddControllers(options =>
+{
+    if (isLoggingEnabled)
+    {
+        options.Filters.Add<LoggingActionFilter>();
+    }
+});
+
 var jwtSecretKey = Environment.GetEnvironmentVariable("JWT_SECRET");
 
 builder.Services.AddAuthentication(options =>
