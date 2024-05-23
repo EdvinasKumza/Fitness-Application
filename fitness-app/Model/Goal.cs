@@ -9,6 +9,8 @@ public class Goal
     [Required]
     public int UserId { get; set; }
     [Required]
+    public int ExerciseId { get; set; }
+    [Required]
     public string Type { get; set; }
     [Required]
     public int Target { get; set; }

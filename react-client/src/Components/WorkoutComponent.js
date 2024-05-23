@@ -28,7 +28,12 @@ const WorkoutComponent = () => {
   };
 
   const fetchExercises = async () => {
-    const response = await fetch('/api/exercises/getexercises');
+    const response = await fetch('http://localhost:5260/api/getexercises', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
     const data = await response.json();
     setExercisesList(data);
   };
@@ -64,7 +69,8 @@ const WorkoutComponent = () => {
       return (
         <div>
           <h2>Exercises</h2>
-          <select value={selectedExercise?.id} onChange={(e) => setSelectedExercise(exercisesList.find(ex => ex.id === parseInt(e.target.value)))}>
+          <select value={selectedExercise?.id} 
+                  onChange={(e) => setSelectedExercise(exercisesList.find(ex => ex.id === parseInt(e.target.value)))}>
             <option value="">Select Exercise</option>
             {exercisesList.map((exercise) => (
               <option key={exercise.id} value={exercise.id}>
@@ -105,7 +111,7 @@ const WorkoutComponent = () => {
   };
 
   return (
-    <div className="workout-tracker">
+    <div className="workout-tracker" style={{color: 'green'}}>
       {renderWorkoutControls()}
       {renderPreviousWorkouts()}
     </div>

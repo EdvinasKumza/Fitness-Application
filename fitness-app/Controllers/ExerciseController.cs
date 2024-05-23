@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 
 namespace FitnessApp.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]
 public class ExerciseController : ControllerBase
 {
     private readonly AppDbContext _appDbContext;
@@ -25,7 +23,7 @@ public class ExerciseController : ControllerBase
     }*/
 
     [HttpGet]
-    [Route("getexercises")]
+    [Route("api/getexercises")]
     public IActionResult GetExercises()
     {
         var exercises = _appDbContext.Exercises.ToList();
