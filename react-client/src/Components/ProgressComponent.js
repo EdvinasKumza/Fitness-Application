@@ -9,11 +9,13 @@ const ProgressComponent = () => {
     const [sets, setSets] = useState([]);
     const [filteredSets, setFilteredSets] = useState([]);
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [workouts, setWorkouts] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
         fetchSets();
         fetchGoals();
+        fetchWorkouts();
     }, []);
 
     useEffect(() => {
@@ -51,13 +53,38 @@ const ProgressComponent = () => {
         }
     };
 
+    const fetchWorkouts = async () => {
+        var jwt_token = localStorage.getItem('jwtToken');
+        const response = await fetch('http://localhost:5260/api/workouts', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${jwt_token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+        if (response.ok) {
+            const data = await response.json();
+            setWorkouts(data);
+        }
+    };
+
     const goalData = goals.map(goal => {
         const setsForGoal = filteredSets
             .filter(set => set.exerciseId === goal.exerciseId)
-            .map((set, index) => ({
-                name: `Set ${index + 1}`,
-                weight: set.weight
-            }));
+            .map((set) => {
+                const workout = workouts.find(workout => workout && workout.id === set.workoutId);
+                if (!workout) {
+                    return null;
+                }
+                const date = new Date(workout.startDate);
+                const month = date.getMonth() + 1; // getMonth() returns month index starting from 0
+                const day = date.getDate();
+                return {
+                    name: `${month}-${day}`,
+                    weight: set.weight
+                };
+            })
+            .filter(set => set !== null);
 
         return { goal, setsForGoal };
     });
