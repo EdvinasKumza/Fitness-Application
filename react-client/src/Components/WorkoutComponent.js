@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import HeaderComponent from './HeaderComponent';
 
 const WorkoutComponent = () => {
   const [isWorkoutActive, setIsWorkoutActive] = useState(false);
@@ -18,7 +19,8 @@ const WorkoutComponent = () => {
     const response = await fetch('http://localhost:5260/api/workouts', {
         method: 'GET',
         headers: {
-            'Authorization': `Bearer ${jwt_token}`
+            'Authorization': `Bearer ${jwt_token}`,
+            'Content-Type': 'application/json',
         },
     });
     if(response.ok){
@@ -28,7 +30,7 @@ const WorkoutComponent = () => {
   };
 
   const fetchExercises = async () => {
-    const response = await fetch('http://localhost:5260/api/getexercises', {
+    const response = await fetch('http://localhost:5260/api/exercises', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -43,7 +45,8 @@ const WorkoutComponent = () => {
     const response = await fetch('http://localhost:5260/api/workouts/start', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${jwt_token}`
+        'Authorization': `Bearer ${jwt_token}`,
+        'Content-Type': 'application/json',
       },
     });
     const data = await response.json();
@@ -64,13 +67,41 @@ const WorkoutComponent = () => {
     window.location.reload();
   };
 
+  const isTokenValid = () => {
+    // Get the token from localStorage
+    const token = localStorage.getItem('jwtToken');
+
+    // Return false if no token is found
+    if (!token) return false;
+
+    try {
+        // Decode the token payload
+        const base64Payload = token.split('.')[1];
+        const decodedPayload = JSON.parse(atob(base64Payload));
+
+        // Check the expiration time
+        const exp = decodedPayload.exp;
+        const currentTime = Math.floor(Date.now() / 1000); // Convert to seconds
+
+        return currentTime < exp; // Check if the current time is less than the expiration time
+    } catch (error) {
+        console.error('Invalid token:', error);
+        return false; // Token is invalid
+    }
+  };
+
+  const tokenValid = isTokenValid();
   const renderWorkoutControls = () => {
     if (isWorkoutActive) {
       return (
-        <div>
+        <div className="workout-tracker-area">
           <h2>Exercises</h2>
-          <select value={selectedExercise?.id} 
-                  onChange={(e) => setSelectedExercise(exercisesList.find(ex => ex.id === parseInt(e.target.value)))}>
+          <select
+            value={selectedExercise ? selectedExercise.id : ''}
+            onChange={(e) =>
+              setSelectedExercise(exercisesList.find(ex => ex.id === parseInt(e.target.value)))
+            }
+          >
             <option value="">Select Exercise</option>
             {exercisesList.map((exercise) => (
               <option key={exercise.id} value={exercise.id}>
@@ -86,21 +117,22 @@ const WorkoutComponent = () => {
       );
     } else {
       return (
-        <button onClick={startWorkout}>Start Workout</button>
+        <div className="workout-tracker-area">
+          <button onClick={startWorkout}>Start Workout</button>
+        </div>
       );
     }
   };
 
   const renderPreviousWorkouts = () => {
     return (
-      <div>
-        <h2>Previous Workouts</h2>
+      <div className="workout-tracker-area">
+        <h3>Previous Workouts</h3>
         <ul>
           {previousWorkouts.map((workout) => (
             <li key={workout.id}>
               <strong>{workout.name}</strong> ({workout.type}) - {workout.duration} minutes (
-                {workout.exercises && workout.exercises.length} Exercises)
-              <br />
+              {workout.exercises && workout.exercises.length} Exercises)
               {workout.description && <p>Description: {workout.description}</p>}
               {workout.notes && <p>Notes: {workout.notes}</p>}
             </li>
@@ -112,26 +144,10 @@ const WorkoutComponent = () => {
 
   return (
     <div className="workout-tracker" style={{color: 'green'}}>
-      {renderWorkoutControls()}
-      {renderPreviousWorkouts()}
+      <HeaderComponent />
+        {renderWorkoutControls()}
+        {renderPreviousWorkouts()}
     </div>
-  );
-};
-
-const ExerciseList = ({ exercises, onAddExercise }) => {
-  // Implement logic to display and allow adding of exercises
-  // Consider using a form or input fields for user interaction
-  return (
-    <ul>
-      {exercises.map((exercise) => (
-        <li key={exercise.id}>{exercise.name}</li>
-      ))}
-      <li>
-        <button onClick={() => onAddExercise({ name: 'New Exercise' })}>
-          Add Exercise
-        </button>
-      </li>
-    </ul>
   );
 };
 

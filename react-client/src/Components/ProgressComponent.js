@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import ProgressGraph from './pages/ProgressGraph';
 import { useNavigate } from 'react-router-dom';
 import './pages/ProgressComponent.css';
+import HeaderComponent from './HeaderComponent';
 
 const ProgressComponent = () => {
 
     const [goals, setGoals] = useState([]);
     const [sets, setSets] = useState([]);
     const [filteredSets, setFilteredSets] = useState([]);
-    const [dropdownOpen, setDropdownOpen] = useState(false);
     const [workouts, setWorkouts] = useState([]);
     const navigate = useNavigate();
 
@@ -120,73 +120,9 @@ const ProgressComponent = () => {
         return null;
     }
 
-    const handleHomeButton = () => {
-        navigate('/');
-    };
-
-    const toggleDropdown = () => {
-        setDropdownOpen(!dropdownOpen);
-    };
-
-    const handleGoalsButton = () => {
-        navigate('/goals');
-    };
-
-    const handleWorkoutsButton = () => {
-        navigate('/workouts');
-    };
-
-    const handleProgressButton = () => {
-        navigate('/progress');
-    };
-
-    const handleLogout = () => {
-        localStorage.removeItem('jwtToken');
-        localStorage.removeItem('name');
-        setDropdownOpen(false);
-        navigate('/');
-        window.location.reload();
-    };
-
     return (
         <div style={{color: 'green'}}>
-            <nav className="navbar">
-                <img src="/logo192.png" alt="Logo" className="navbar-logo" />
-                <ul className="navbar-links">
-                    <li>
-                        <button onClick={handleHomeButton}>Home</button>
-                    </li>
-                    <li>
-                        <a href="#services">Services</a>
-                    </li>
-                    <li>
-                        <a href="#about">About</a>
-                    </li>
-                </ul>
-                <div>
-                    <div>
-                        <button className="dropbtn" onClick={toggleDropdown}>
-                            {name}
-                        </button>
-                        {dropdownOpen && (
-                            <div id="myDropdown" className="dropdown-content">
-                                <button onClick={handleWorkoutsButton}>
-                                    Workouts
-                                </button>
-                                <button onClick={handleGoalsButton}>
-                                    Goals
-                                </button>
-                                <button onClick={handleProgressButton}>
-                                    Progress
-                                </button>
-                                <button onClick={handleLogout}>
-                                    Logout
-                                </button>
-                            </div>
-                        )}
-                    </div>
-                </div>
-            </nav>
+            <HeaderComponent />
             <div className='graph-area'>
                 <div>
                     <ul>

@@ -60,15 +60,3 @@
     margin-top: 20px; /* Space above the section heading */
     color: #adebad; /* Lighter green for heading */
 }
-
-.navbar-links li button {
-    font-family: "Poppins";
-    color: white;
-    text-decoration: none;
-    margin: 0 10px;
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    font-size: 16px;
-}

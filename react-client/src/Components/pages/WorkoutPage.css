@@ -1,0 +1,52 @@
+/* Styles for the workout tracker area */
+.workout-tracker-area {
+    color: #d4d4d4; /* Light gray text for better visibility on dark backgrounds */
+    padding: 20px;
+    background-color: #333; /* Dark background for the section */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    margin: 120px auto 20px;
+    max-width: 600px;
+    text-align: center; /* Center-align text */
+}
+
+.workout-tracker-area button,
+.workout-tracker-area select {
+    width: 100%; /* Full width of the container */
+    padding: 10px; /* Padding for better click area */
+    margin: 10px 0; /* Space below each element */
+    background-color: #242424; /* Slightly lighter dark background */
+    border: 2px solid #555; /* Subtle border for elements */
+    border-radius: 4px; /* Matching rounded corners */
+    color: #fff; /* White text color */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+.workout-tracker-area button {
+    background-color: #4CAF50; /* Green background */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+.workout-tracker-area button:hover {
+    background-color: #367c39; /* Darker green on hover */
+}
+
+.workout-tracker-area h2,
+.workout-tracker-area h3 {
+    color: #adebad; /* Lighter green for headings */
+    margin-top: 20px; /* Space above the section heading */
+}
+
+.workout-tracker-area ul {
+    list-style: none; /* Remove default list styling */
+    padding: 0; /* Remove default padding */
+}
+
+.workout-tracker-area li {
+    padding: 8px; /* Padding for each list item */
+    border-bottom: 1px solid #444; /* Subtle separator for items */
+}
+
+.workout-tracker-area li:last-child {
+    border-bottom: none; /* No border on the last item */
+}
