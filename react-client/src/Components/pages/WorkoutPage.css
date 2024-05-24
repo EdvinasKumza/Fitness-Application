@@ -1,14 +1,15 @@
-/* Styles for the workout tracker area */
-.workout-tracker-area {
+  /* Styles for the workout tracker area */
+  .workout-tracker-area {
     color: #d4d4d4; /* Light gray text for better visibility on dark backgrounds */
     padding: 20px;
     background-color: #333; /* Dark background for the section */
     border-radius: 8px; /* Rounded corners */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
-    margin: 120px auto 20px;
+    margin: 60px auto 20px; /* Increased top margin to add space above */
+    margin-top: 120px;
     max-width: 600px;
     text-align: center; /* Center-align text */
-}
+  }
 
 .workout-tracker-area button,
 .workout-tracker-area select {
@@ -50,3 +51,154 @@
 .workout-tracker-area li:last-child {
     border-bottom: none; /* No border on the last item */
 }
+
+  .exercise {
+    margin-bottom: 20px; /* Space between exercises */
+  }
+  
+  .exercise h3 {
+    color: #9cef9c; /* Soft green for exercise name */
+  }
+  
+  .set {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .set.completed {
+    background-color: #2a2a2a; /* Darker background for completed sets */
+  }
+  
+  .set span {
+    flex: 1;
+    text-align: left;
+  }
+  
+  .set input {
+    flex: 1;
+    margin: 0 5px;
+    padding: 5px;
+    background-color: #242424;
+    border: 2px solid #555;
+    border-radius: 4px;
+    color: #fff;
+  }
+  
+  .set button {
+    background-color: #444;
+    border: none;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 5px;
+  }
+  
+  .set button:hover {
+    background-color: #555;
+  }
+  
+  .set button.complete {
+    background-color: #4CAF50; /* Green for complete */
+  }
+  
+  .set button.delete {
+    background-color: #f44336; /* Red for delete */
+  }
+  
+  button.add-set {
+    background-color: #4CAF50; /* Green for add set */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  button.add-set:hover {
+    background-color: #45a049;
+  }
+
+
+  
+  .exercise {
+    margin-bottom: 20px; /* Space between exercises */
+  }
+  
+  .exercise h3 {
+    color: #9cef9c; /* Soft green for exercise name */
+  }
+  
+  .set {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .set.completed {
+    background-color: #2a2a2a; /* Darker background for completed sets */
+  }
+  
+  .set span {
+    flex: 1;
+    text-align: left;
+  }
+  
+  .set input {
+    flex: 1;
+    margin: 0 5px;
+    padding: 5px;
+    background-color: #242424;
+    border: 2px solid #555;
+    border-radius: 4px;
+    color: #fff;
+  }
+  
+  .set button {
+    background-color: #444;
+    border: none;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 5px;
+  }
+  
+  .set button:hover {
+    background-color: #555;
+  }
+  
+  .set button.complete {
+    background-color: #4CAF50; /* Green for complete */
+  }
+  
+  .set button.delete {
+    background-color: #f44336; /* Red for delete */
+  }
+  
+  button.add-set {
+    background-color: #4CAF50; /* Green for add set */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  button.add-set:hover {
+    background-color: #45a049;
+  }
+  

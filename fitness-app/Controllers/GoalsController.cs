@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using FitnessApp.Model;
 using Microsoft.EntityFrameworkCore;
+using FitnessApp.Utils;
 
 namespace FitnessApp.Controllers;
 
@@ -19,12 +20,7 @@ public class GoalsController : ControllerBase
     [HttpPost("api/goals/set")]
     public async Task<IActionResult> SetGoal([FromHeader] string Authorization, [FromBody] Goal goal)
     {
-        var jwtToken = Authorization.Split(" ")[1];
-        var handler = new JwtSecurityTokenHandler();
-        var token = handler.ReadJwtToken(jwtToken);
-        var userId = -1;
-        var claims = token.Claims.Select(claim => (claim.Type, claim.Value)).ToList();
-        userId = int.Parse(claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
+        var userId = Utils.Utils.verifyToken(Authorization);
 
         if (!ModelState.IsValid)
         {
@@ -56,12 +52,7 @@ public class GoalsController : ControllerBase
     [HttpGet("api/goals")]
     public async Task<IActionResult> GetGoals([FromHeader] string Authorization)
     {
-        var jwtToken = Authorization.Split(" ")[1];
-        var handler = new JwtSecurityTokenHandler();
-        var token = handler.ReadJwtToken(jwtToken);
-        var userId = -1;
-        var claims = token.Claims.Select(claim => (claim.Type, claim.Value)).ToList();
-        userId = int.Parse(claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
+        var userId = Utils.Utils.verifyToken(Authorization);
 
         var goals = await _appDbContext.Goals.Where(g => g.UserId == userId).ToListAsync();
         return Ok(goals);

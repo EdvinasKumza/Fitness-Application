@@ -11,22 +11,21 @@ const WorkoutComponent = () => {
   const [selectedExercise, setSelectedExercise] = useState(null);
   const navigate = useNavigate();
 
-
   useEffect(() => {
     fetchExercises();
     fetchPreviousWorkouts();
   }, []);
 
   const fetchPreviousWorkouts = async () => {
-    var jwt_token = localStorage.getItem('jwtToken');
+    const jwt_token = localStorage.getItem('jwtToken');
     const response = await fetch('http://localhost:5260/api/workouts', {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${jwt_token}`,
-            'Content-Type': 'application/json',
-        },
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${jwt_token}`,
+        'Content-Type': 'application/json',
+      },
     });
-    if(response.ok){
+    if (response.ok) {
       const data = await response.json();
       setPreviousWorkouts(data);
     }
@@ -44,7 +43,7 @@ const WorkoutComponent = () => {
   };
 
   const startWorkout = async () => {
-    var jwt_token = localStorage.getItem('jwtToken');
+    const jwt_token = localStorage.getItem('jwtToken');
     const response = await fetch('http://localhost:5260/api/workouts/start', {
       method: 'POST',
       headers: {
@@ -54,71 +53,181 @@ const WorkoutComponent = () => {
     });
     const data = await response.json();
     setIsWorkoutActive(true);
-    setWorkoutId(data.id); // Update state with newly created workout ID
+    setWorkoutId(data.id);
   };
 
-  const addExercise = () => {
+  const addExercise = async () => {
     if (!selectedExercise) return;
-    setExercises([...exercises, selectedExercise]);
-    setSelectedExercise(null);
+    const exerciseId = selectedExercise.id;
+    console.log(JSON.stringify({ exerciseId }))
+    const jwt_token = localStorage.getItem('jwtToken');
+    const response = await fetch(`http://localhost:5260/api/workouts/${workoutId}/exercises`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${jwt_token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ exerciseId }), // Assuming 'selectedExercise' has an 'id' property
+    });
+  
+    if (response.ok) {
+      // Exercise successfully added to the workout on the backend
+      setExercises([...exercises, { ...selectedExercise, sets: [] }]);
+      setSelectedExercise(null);
+    } else {
+      console.error('Error adding exercise to workout:', await response.text());
+      // Handle potential errors from the backend API call
+    }
   };
 
   const endWorkout = async () => {
     await fetch(`http://localhost:5260/api/workouts/${workoutId}`, { method: 'PUT' });
     setIsWorkoutActive(false);
-    setExercises([]); // Clear exercises after ending workout
+    setExercises([]);
     window.location.reload();
   };
 
   const handleRepsChange = (exerciseId, setId, newReps) => {
-    // Update the reps value for the specific set within the exercises state
     setExercises((prevState) => {
-      const updatedExercises = [...prevState];
-      const exerciseIndex = updatedExercises.findIndex((ex) => ex.id === exerciseId);
-      const setIndex = updatedExercises[exerciseIndex].sets.findIndex((set) => set.id === setId);
-      updatedExercises[exerciseIndex].sets[setIndex].reps = newReps;
+      const updatedExercises = prevState.map((exercise) => {
+        if (exercise.id === exerciseId) {
+          return {
+            ...exercise,
+            sets: exercise.sets.map((set) =>
+              set.id === setId ? { ...set, reps: newReps } : set
+            ),
+          };
+        }
+        return exercise;
+      });
       return updatedExercises;
     });
   };
-  
+
   const handleWeightChange = (exerciseId, setId, newWeight) => {
-    // Update the weight value for the specific set within the exercises state
-    // Similar logic to handleRepsChange
-  };
-  
-  const handleAddSet = (exerciseId) => {
-    // Update the exercises state to include a new set object for the exercise
     setExercises((prevState) => {
-      const updatedExercises = [...prevState];
-      const exerciseIndex = updatedExercises.findIndex((ex) => ex.id === exerciseId);
-      if (!updatedExercises[exerciseIndex].sets) {
-        updatedExercises[exerciseIndex].sets = [];
-      }
-      updatedExercises[exerciseIndex].sets.push({ id: Math.random(), setNumber: updatedExercises[exerciseIndex].sets?.length + 1, reps: '', weight: '' });
+      const updatedExercises = prevState.map((exercise) => {
+        if (exercise.id === exerciseId) {
+          return {
+            ...exercise,
+            sets: exercise.sets.map((set) =>
+              set.id === setId ? { ...set, weight: newWeight } : set
+            ),
+          };
+        }
+        return exercise;
+      });
       return updatedExercises;
+    });
+  };
+
+  const handleAddSet = async (exerciseId) => {
+    const set = {
+      ExerciseId: exerciseId,
+      WorkoutId: workoutId,
+      Order: exercises.find(ex => ex.id === exerciseId).sets.length + 1,
+      Reps: 0,
+      Weight: 0,
+      Completed: false,
+      RestTime: 0,
+      Type: 'Regular',
+    };
+
+    const jwt_token = localStorage.getItem('jwtToken');
+    const response = await fetch('http://localhost:5260/api/sets/add', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${jwt_token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(set),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      setExercises((prevState) => {
+        const updatedExercises = prevState.map((exercise) => {
+          if (exercise.id === exerciseId) {
+            return { ...exercise, sets: [...exercise.sets, data] };
+          }
+          return exercise;
+        });
+        return updatedExercises;
+      });
+    }
+  };
+
+  const handleDeleteSet = async (exerciseId, setId) => {
+    const jwt_token = localStorage.getItem('jwtToken');
+    const response = await fetch(`http://localhost:5260/api/sets/${setId}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${jwt_token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.ok) {
+      setExercises((prevState) => {
+        const updatedExercises = prevState.map((exercise) => {
+          if (exercise.id === exerciseId) {
+            return {
+              ...exercise,
+              sets: exercise.sets.filter((set) => set.id !== setId),
+            };
+          }
+          return exercise;
+        });
+        return updatedExercises;
+      });
+    }
+  };
+
+  const handleCompleteSet = (exerciseId, setId) => {
+    setExercises((prevState) => {
+      const updatedExercises = prevState.map((exercise) => {
+        if (exercise.id === exerciseId) {
+          return {
+            ...exercise,
+            sets: exercise.sets.map((set) =>
+              set.id === setId ? { ...set, completed: !set.completed } : set
+            ),
+          };
+        }
+        return exercise;
+      });
+      return updatedExercises;
+    });
+
+    const set = exercises.find((exercise) => exercise.id === exerciseId).sets.find((set) => set.id === setId);
+    saveSetCompletion(set);
+  };
+
+  const saveSetCompletion = async (set) => {
+    const jwt_token = localStorage.getItem('jwtToken');
+    await fetch(`http://localhost:5260/api/sets/${set.id}/complete`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${jwt_token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ completed: set.completed }),
     });
   };
 
   const isTokenValid = () => {
-    // Get the token from localStorage
     const token = localStorage.getItem('jwtToken');
-
-    // Return false if no token is found
     if (!token) return false;
 
     try {
-        // Decode the token payload
-        const base64Payload = token.split('.')[1];
-        const decodedPayload = JSON.parse(atob(base64Payload));
-
-        // Check the expiration time
-        const exp = decodedPayload.exp;
-        const currentTime = Math.floor(Date.now() / 1000); // Convert to seconds
-
-        return currentTime < exp; // Check if the current time is less than the expiration time
+      const base64Payload = token.split('.')[1];
+      const decodedPayload = JSON.parse(atob(base64Payload));
+      const exp = decodedPayload.exp;
+      const currentTime = Math.floor(Date.now() / 1000);
+      return currentTime < exp;
     } catch (error) {
-        console.error('Invalid token:', error);
-        return false; // Token is invalid
+      console.error('Invalid token:', error);
+      return false;
     }
   };
 
@@ -135,25 +244,45 @@ const WorkoutComponent = () => {
       return (
         <div className="workout-tracker-area">
           <h2>Exercises</h2>
-          <ul>
           {exercises.map((exercise) => (
-            <li key={exercise.id}>
-            {exercise.name}
-            {exercise.sets?.map((set) => (
-              <div key={set.id}>
-                <span>Set: {set.setNumber}</span>
-                <input type="number" min="1" value={set.reps} onChange={(e) => handleRepsChange(exercise.id, set.id, e.target.value)} />
-                <input type="number" min="0" value={set.weight} onChange={(e) => handleWeightChange(exercise.id, set.id, e.target.value)} />
+            <div key={exercise.id} className="exercise">
+              <h3>{exercise.name}</h3>
+              <div className="sets">
+                {exercise.sets.map((set) => (
+                  <div key={set.id} className={`set ${set.completed ? 'completed' : ''}`}>
+                    <span>Set {set.setNumber}</span>
+                    <input
+                      type="number"
+                      min="1"
+                      value={set.reps}
+                      onChange={(e) => handleRepsChange(exercise.id, set.id, e.target.value)}
+                      placeholder="Reps"
+                    />
+                    <input
+                      type="number"
+                      min="0"
+                      value={set.weight}
+                      onChange={(e) => handleWeightChange(exercise.id, set.id, e.target.value)}
+                      placeholder="Weight"
+                    />
+                    <button onClick={() => handleCompleteSet(exercise.id, set.id)}>
+                      ✓
+                    </button>
+                    <button onClick={() => handleDeleteSet(exercise.id, set.id)}>
+                      ✕
+                    </button>
+                  </div>
+                ))}
+                <button onClick={() => handleAddSet(exercise.id)} className="add-set">
+                  Add Set
+                </button>
               </div>
-            ))}
-            <button onClick={() => handleAddSet(exercise.id)}>Add Set</button>
-          </li>
+            </div>
           ))}
-          </ul>
           <select
             value={selectedExercise ? selectedExercise.id : ''}
             onChange={(e) =>
-              setSelectedExercise(exercisesList.find(ex => ex.id === parseInt(e.target.value)))
+              setSelectedExercise(exercisesList.find((ex) => ex.id === parseInt(e.target.value)))
             }
           >
             <option value="">Select Exercise</option>
@@ -163,7 +292,7 @@ const WorkoutComponent = () => {
               </option>
             ))}
           </select>
-          <button onClick={addExercise} disabled={!selectedExercise}>
+          <button onClick={() => addExercise()} disabled={!selectedExercise}>
             Add Exercise
           </button>
           <button onClick={endWorkout}>End Workout</button>
@@ -197,10 +326,10 @@ const WorkoutComponent = () => {
   };
 
   return (
-    <div className="workout-tracker" style={{color: 'green'}}>
+    <div className="workout-tracker">
       <HeaderComponent />
-        {renderWorkoutControls()}
-        {renderPreviousWorkouts()}
+      {renderWorkoutControls()}
+      {renderPreviousWorkouts()}
     </div>
   );
 };
