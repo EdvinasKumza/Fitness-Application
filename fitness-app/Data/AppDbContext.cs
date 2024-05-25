@@ -24,5 +24,6 @@ namespace EntityFrameworkCore.MySQL.Data
         public DbSet<Muscle> Muscles { get; set; }
         public DbSet<Goal> Goals { get; set; }
         public DbSet<WorkoutExerciseOrder> WorkoutExerciseOrders { get; set; }
+        public DbSet<Schedule> Schedules { get; set; }
     }
 }

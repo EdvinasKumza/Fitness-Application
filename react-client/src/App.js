@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import GoalsComponent from "./Components/GoalsComponent";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ProgressComponent from "./Components/ProgressComponent";
+import CalendarPage from './Components/pages/CalendarPage';
 
 function App() {
   return (
@@ -15,7 +16,8 @@ function App() {
             <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/workouts" element={<WorkoutPage />} />
-                <Route path="/goals" element={<GoalsComponent/>} />
+                <Route path="/goals" element={<GoalsComponent />} />
+                <Route path="/calendar" element={<CalendarPage />} />
                 <Route path="/progress" element={<ProgressComponent />} />
             </Routes>
         </Router>

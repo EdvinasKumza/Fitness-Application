@@ -10,23 +10,27 @@ const HeaderComponent = () => {
     const handleHomeButton = () => {
         navigate('/');
     };
-    
+
     const toggleDropdown = () => {
         setDropdownOpen(!dropdownOpen);
     };
-    
+
     const handleGoalsButton = () => {
         navigate('/goals');
     };
-    
+
     const handleWorkoutsButton = () => {
         navigate('/workouts');
     };
-    
+
     const handleProgressButton = () => {
         navigate('/progress');
     };
-    
+
+    const handleCalendarButton = () => {
+        navigate('/calendar');
+    };
+
     const handleLogout = () => {
         localStorage.removeItem('jwtToken');
         localStorage.removeItem('name');
@@ -50,29 +54,28 @@ const HeaderComponent = () => {
                         <a href="#about">About</a>
                     </li>
                 </ul>
-                <div>
-                    <div>
-                        <button className="dropbtn" onClick={toggleDropdown}>
-                            {name}
-                        </button>
-                        {dropdownOpen && (
-                            <div id="myDropdown" className="dropdown-content">
-                                <button onClick={handleWorkoutsButton}>
-                                    Workouts
-                                </button>
-                                <button onClick={handleGoalsButton}>
-                                    Goals
-                                </button>
-                                <button onClick={handleProgressButton}>
-                                    Progress
-                                </button>
-                                <button onClick={handleLogout}>
-                                    Logout
-                                </button>
-                            </div>
-                        )}
-                    </div>
-                    
+                <div className="navbar-right">
+                    {!name ? (
+                        <>
+                            <button className="btn" onClick={handleHomeButton}>Sign Up</button>
+                            <button className="btn" onClick={handleHomeButton}>Log In</button>
+                        </>
+                    ) : (
+                        <>
+                            <button className="dropbtn" onClick={toggleDropdown}>
+                                {name}
+                            </button>
+                            {dropdownOpen && (
+                                <div className="dropdown-content">
+                                    <button onClick={handleWorkoutsButton}>Workouts</button>
+                                    <button onClick={handleGoalsButton}>Goals</button>
+                                    <button onClick={handleProgressButton}>Progress</button>
+                                    <button onClick={handleCalendarButton}>Calendar</button>
+                                    <button onClick={handleLogout}>Logout</button>
+                                </div>
+                            )}
+                        </>
+                    )}
                 </div>
             </nav>
         </div>
