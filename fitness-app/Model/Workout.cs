@@ -15,6 +15,7 @@ public class Workout
     [Required]
     public string Name { get; set; }
     public List<Set>? Sets { get; set; }
+    public List<WorkoutExerciseOrder>? WorkoutExerciseOrders { get; set; }
     [Required]
     public DateTime StartDate { get; set; }
     [Required]

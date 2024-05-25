@@ -4,13 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import './pages/GoalsPage.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import HeaderComponent from './HeaderComponent';
 
 const GoalsComponent = () => {
     const [exercise, setExercise] = useState('');
     const [value, setValue] = useState('');
     const [goals, setGoals] = useState([]);
     const [exercisesList, setExercisesList] = useState([]);
-    const [dropdownOpen, setDropdownOpen] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -19,7 +19,7 @@ const GoalsComponent = () => {
     }, []);
 
     const fetchExercises = async () => {
-        const response = await fetch('http://localhost:5260/api/getexercises', {
+        const response = await fetch('http://localhost:5260/api/exercises', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -50,34 +50,6 @@ const GoalsComponent = () => {
 
     const handleValueChange = (event) => {
         setValue(event.target.value);
-    };
-
-    const handleHomeButton = () => {
-        navigate('/');
-    };
-
-    const toggleDropdown = () => {
-        setDropdownOpen(!dropdownOpen);
-    };
-
-    const handleGoalsButton = () => {
-        navigate('/goals');
-    };
-
-    const handleWorkoutsButton = () => {
-        navigate('/workouts');
-    };
-
-    const handleProgressButton = () => {
-        navigate('/progress');
-    };
-
-    const handleLogout = () => {
-        localStorage.removeItem('jwtToken');
-        localStorage.removeItem('name');
-        setDropdownOpen(false);
-        navigate('/');
-        window.location.reload();
     };
 
     const handleSetGoal = async () => {
@@ -157,44 +129,7 @@ const GoalsComponent = () => {
 
     return (
         <div className="main-content">
-            <nav className="navbar">
-                <img src="/logo192.png" alt="Logo" className="navbar-logo" />
-                <ul className="navbar-links">
-                    <li>
-                        <button onClick={handleHomeButton}>Home</button>
-                    </li>
-                    <li>
-                        <a href="#services">Services</a>
-                    </li>
-                    <li>
-                        <a href="#about">About</a>
-                    </li>
-                </ul>
-                <div>
-                    <div>
-                        <button className="dropbtn" onClick={toggleDropdown}>
-                            {name}
-                        </button>
-                        {dropdownOpen && (
-                            <div id="myDropdown" className="dropdown-content">
-                                <button onClick={handleWorkoutsButton}>
-                                    Workouts
-                                </button>
-                                <button onClick={handleGoalsButton}>
-                                    Goals
-                                </button>
-                                <button onClick={handleProgressButton}>
-                                    Progress
-                                </button>
-                                <button onClick={handleLogout}>
-                                    Logout
-                                </button>
-                            </div>
-                        )}
-                    </div>
-                    
-                </div>
-            </nav>
+            <HeaderComponent />
 
             <div className='goal-setting-area'>
                 <div>

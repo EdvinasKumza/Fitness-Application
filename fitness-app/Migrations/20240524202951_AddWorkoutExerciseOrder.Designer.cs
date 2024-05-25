@@ -3,6 +3,7 @@ using System;
 using EntityFrameworkCore.MySQL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FitnessApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240524202951_AddWorkoutExerciseOrder")]
+    partial class AddWorkoutExerciseOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.17");
@@ -216,8 +219,6 @@ namespace FitnessApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ExerciseId");
-
                     b.HasIndex("WorkoutId");
 
                     b.ToTable("WorkoutExerciseOrders");
@@ -268,19 +269,11 @@ namespace FitnessApp.Migrations
 
             modelBuilder.Entity("FitnessApp.Model.WorkoutExerciseOrder", b =>
                 {
-                    b.HasOne("FitnessApp.Model.Exercise", "Exercise")
-                        .WithMany()
-                        .HasForeignKey("ExerciseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("FitnessApp.Model.Workout", "Workout")
-                        .WithMany("WorkoutExerciseOrders")
+                        .WithMany()
                         .HasForeignKey("WorkoutId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Exercise");
 
                     b.Navigation("Workout");
                 });
@@ -293,8 +286,6 @@ namespace FitnessApp.Migrations
             modelBuilder.Entity("FitnessApp.Model.Workout", b =>
                 {
                     b.Navigation("Sets");
-
-                    b.Navigation("WorkoutExerciseOrders");
                 });
 #pragma warning restore 612, 618
         }

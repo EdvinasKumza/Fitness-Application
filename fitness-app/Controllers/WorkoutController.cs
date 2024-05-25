@@ -10,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Web;
 using Microsoft.AspNetCore.Authentication;
+using FitnessApp.Utils;
 
 namespace FitnessApp.Controllers;
 
@@ -28,14 +29,7 @@ public class WorkoutsController : ControllerBase
     [Route("api/workouts/start")]
     public async Task<IActionResult> StartWorkout([FromHeader] string Authorization)
     {
-        var jwtToken = Authorization.Split(" ")[1];
-        var handler = new JwtSecurityTokenHandler();
-        var token = handler.ReadJwtToken(jwtToken);
-        var userId = -1;
-        var claims = token.Claims.Select(claim => (claim.Type, claim.Value)).ToList();
-        userId = int.Parse(claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
-
-        Console.WriteLine("userid" + userId);
+        var userId = Utils.Utils.verifyToken(Authorization);
 
         if (userId == -1)
         {
@@ -44,6 +38,37 @@ public class WorkoutsController : ControllerBase
 
         var newWorkout = await _workoutService.StartWorkoutAsync(userId);
         return Ok(newWorkout);
+    }
+
+    [HttpPost]
+    [Route("api/workouts/{workoutId}/exercises")]
+    public async Task<IActionResult> AddExercise(int workoutId, [FromBody] AddExerciseRequest exerciseId)
+    {
+
+        Console.WriteLine(exerciseId.ExerciseId);
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        var workout = await _appDbContext.Workouts.FindAsync(workoutId);
+        if (workout == null)
+        {
+            return NotFound();
+        }
+
+        var workoutExerciseOrder = new WorkoutExerciseOrder
+        {
+            WorkoutId = workoutId,
+            ExerciseId = exerciseId.ExerciseId,
+            Order = await GetNextExerciseOrder(workoutId)
+        };
+
+        // 4. Save the workout and WorkoutExerciseOrder
+        await _appDbContext.WorkoutExerciseOrders.AddAsync(workoutExerciseOrder);
+        await _appDbContext.SaveChangesAsync();
+
+        return Ok();
     }
 
     [HttpPost]
@@ -71,28 +96,27 @@ public class WorkoutsController : ControllerBase
     [Route("api/workouts")]
     public async Task<IActionResult> GetPreviousWorkouts([FromHeader] string Authorization)
     {
-        var jwtToken = Authorization.Split(" ")[1];
-        var handler = new JwtSecurityTokenHandler();
-        var token = handler.ReadJwtToken(jwtToken);
-        var userId = -1;
-        var claims = token.Claims.Select(claim => (claim.Type, claim.Value)).ToList();
-        userId = int.Parse(claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
-
-        if (userId == -1)
-        {
-            return BadRequest("Invalid or missing JWT token");
-        }
+        var userId = Utils.Utils.verifyToken(Authorization);
 
         var user = await _appDbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
-        var workouts = await _workoutService.GetPreviousWorkoutsAsync(userId);
-        if(workouts == null)
+        if (user == null)
         {
             return NotFound();
         }
-        user.Workouts = workouts;
-        _appDbContext.Users.Update(user);
-        await _appDbContext.SaveChangesAsync();
+
+        var workouts = await _appDbContext.Workouts
+            .Where(w => w.UserId == userId)
+            .Include(w => w.Sets)
+            .Include(w => w.WorkoutExerciseOrders)
+                .ThenInclude(weo => weo.Exercise)
+            .ToListAsync();
+
+        if (workouts == null || !workouts.Any())
+        {
+            return NotFound("No workouts found for the user.");
+        }
+
         return Ok(workouts);
     }
 
@@ -107,4 +131,19 @@ public class WorkoutsController : ControllerBase
         }
         return Ok(workout);
     }
+
+    private async Task<int> GetNextExerciseOrder(int workoutId)
+    {
+        // Get the maximum order for existing exercises in the workout
+        var maxOrder = await _appDbContext.WorkoutExerciseOrders
+            .Where(woeo => woeo.WorkoutId == workoutId)
+            .MaxAsync(woeo => (int?)woeo.Order) + 1;
+
+        // Return 1 if no exercises exist, otherwise return the next order
+        return maxOrder ?? 1;
+    }
+}
+public class AddExerciseRequest
+{
+    public int ExerciseId { get; set; }
 }

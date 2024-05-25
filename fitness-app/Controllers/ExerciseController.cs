@@ -15,15 +15,8 @@ public class ExerciseController : ControllerBase
         _appDbContext = appDbContext;
     }
 
-    /*[HttpPost]
-    [Route("")]
-    public async Task<IActionResult> AddSet(int workoutId, [FromBody] Set set)
-    {
-        
-    }*/
-
     [HttpGet]
-    [Route("api/getexercises")]
+    [Route("api/exercises")]
     public IActionResult GetExercises()
     {
         var exercises = _appDbContext.Exercises.ToList();
