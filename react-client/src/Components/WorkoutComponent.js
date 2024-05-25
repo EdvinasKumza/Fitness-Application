@@ -105,23 +105,20 @@ const WorkoutComponent = () => {
         console.error('Error updating set:', await response.text());
         // Handle potential errors from the backend API call
       }
-    }, 500), [] // 500ms delay
+    }, 300), [] // 500ms delay
   );
 
   const handleSetChange = (exerciseId, setId, changes) => {
-    setExercises((exercises) => {
-      const updatedExercises = exercises.map((exercise) => {
-        if (exercise.id === exerciseId) {
-          const updatedSet = exercise.sets.find((set) => set.id === setId);
-          return {
-            ...exercise,
-            sets: exercise.sets.map((set) => (set.id === setId ? { ...updatedSet, ...changes } : set)),
-          };
-        }
-        return exercise;
-      });
-      return updatedExercises;
-    });
+    setExercises((exercises) =>
+      exercises.map((exercise) =>
+        exercise.id === exerciseId
+          ? {
+              ...exercise, // Spread the entire exercise object
+              sets: exercise.sets.map((set) => (set.id === setId ? { ...set, ...changes } : set)),
+            }
+          : exercise
+      )
+    );
     debouncedSaveSetChanges(setId, changes); // Pass the changes directly
   };
 
@@ -260,14 +257,20 @@ const WorkoutComponent = () => {
                       type="number"
                       min="1"
                       value={set.reps}
-                      onChange={(e) => handleSetChange(exercise.id, set.id, { reps: e.target.value })}
+                      onChange={(e) => {
+                        if(e.target.value === '') { e.target.value = 0; }
+                        handleSetChange(exercise.id, set.id, { reps: e.target.value })
+                      }}
                       placeholder="Reps"
                     />
                     <input
                       type="number"
                       min="0"
                       value={set.weight}
-                      onChange={(e) => handleSetChange(exercise.id, set.id, { weight: e.target.value })}
+                      onChange={(e) => {
+                        if(e.target.value === '') { e.target.value = 0; }
+                        handleSetChange(exercise.id, set.id, { weight: e.target.value })
+                      }}
                       placeholder="Weight"
                     />
                     <button onClick={() => handleCompleteSet(exercise.id, set.id)}>

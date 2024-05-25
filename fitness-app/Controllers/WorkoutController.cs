@@ -117,20 +117,6 @@ public class WorkoutsController : ControllerBase
             return NotFound("No workouts found for the user.");
         }
 
-        // Debugging information
-        Console.WriteLine($"Total workouts found: {workouts.Count}");
-        foreach (var workout in workouts)
-        {
-            Console.WriteLine($"Workout ID: {workout.Id}");
-            Console.WriteLine($"Number of Sets: {workout.Sets.Count}");
-            Console.WriteLine($"Number of WorkoutExerciseOrders: {workout.WorkoutExerciseOrders.Count}");
-
-            foreach (var weo in workout.WorkoutExerciseOrders)
-            {
-                Console.WriteLine($"Exercise ID: {weo.ExerciseId}, Exercise Name: {weo.Exercise?.Name}");
-            }
-        }
-
         return Ok(workouts);
     }
 

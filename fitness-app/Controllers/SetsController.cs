@@ -89,9 +89,14 @@ public class SetsController : ControllerBase
             return NotFound();
         }
 
-        existingSet.Reps = updatedSet.Reps;
-        existingSet.Weight = updatedSet.Weight;
-        // Add any other fields that need updating
+        if (updatedSet.Reps != 0)
+        {
+            existingSet.Reps = updatedSet.Reps;
+        }
+        if(updatedSet.Weight != 0)
+        {
+            existingSet.Weight = updatedSet.Weight;
+        }
 
         await _appDbContext.SaveChangesAsync();
 
