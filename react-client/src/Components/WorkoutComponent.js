@@ -12,6 +12,7 @@ const WorkoutComponent = () => {
   const [selectedExercise, setSelectedExercise] = useState(null);
   const [expandedWorkouts, setExpandedWorkouts] = useState({});
   const navigate = useNavigate();
+  const filteredExercises = exercisesList.filter((exercise) => !exercises.some((addedExercise) => addedExercise.id === exercise.id));
 
   useEffect(() => {
     fetchExercises();
@@ -288,18 +289,18 @@ const WorkoutComponent = () => {
             </div>
           ))}
           <select
-            value={selectedExercise ? selectedExercise.id : ''}
-            onChange={(e) =>
-              setSelectedExercise(exercisesList.find((ex) => ex.id === parseInt(e.target.value)))
-            }
-          >
-            <option value="">Select Exercise</option>
-            {exercisesList.map((exercise) => (
-              <option key={exercise.id} value={exercise.id}>
-                {exercise.name}
-              </option>
-            ))}
-          </select>
+          value={selectedExercise ? selectedExercise.id : ''}
+          onChange={(e) =>
+            setSelectedExercise(filteredExercises.find((ex) => ex.id === parseInt(e.target.value)))
+          }
+        >
+          <option value="">Select Exercise</option>
+          {filteredExercises.map((exercise) => (
+            <option key={exercise.id} value={exercise.id}>
+              {exercise.name}
+            </option>
+          ))}
+        </select>
           <button onClick={() => addExercise()} disabled={!selectedExercise}>
             Add Exercise
           </button>
