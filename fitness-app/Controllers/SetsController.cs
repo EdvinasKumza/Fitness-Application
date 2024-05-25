@@ -44,27 +44,7 @@ public class SetsController : ControllerBase
             return NotFound();
         }
 
-        existingSet.Completed = true;
-        await _appDbContext.SaveChangesAsync();
-
-        return Ok(existingSet);
-    }
-
-    [HttpPost("api/sets/{setId}/uncomplete")]
-    public async Task<IActionResult> UncompleteSet(int setId, [FromBody] Set set)
-    {
-        if (set == null)
-        {
-            return BadRequest();
-        }
-
-        var existingSet = await _appDbContext.Sets.FindAsync(setId);
-        if (existingSet == null)
-        {
-            return NotFound();
-        }
-
-        existingSet.Completed = false;
+        existingSet.Completed = !existingSet.Completed;
         await _appDbContext.SaveChangesAsync();
 
         return Ok(existingSet);
@@ -84,26 +64,41 @@ public class SetsController : ControllerBase
 
         return Ok(set);
     }
-    [HttpPost("api/sets/delete")]
-    public async Task<IActionResult> DeleteSet([FromBody] Set set)
+    [HttpDelete("api/sets/{setId}")]
+    public async Task<IActionResult> DeleteSet(int setId)
     {
-        if (set == null)
+        Console.WriteLine(setId);
+        var existingSet = await _appDbContext.Sets.FindAsync(setId);
+        if (existingSet == null)
         {
-            return BadRequest();
-        }
+            return NotFound();
+        } 
 
-        var existingSet = await _appDbContext.Sets.FindAsync(set.Id);
+        _appDbContext.Remove(existingSet);
+        await _appDbContext.SaveChangesAsync();
+
+        return Ok();
+    }
+
+    [HttpPut("api/sets/{setId}")]
+    public async Task<IActionResult> UpdateSet(int setId, [FromBody] Set updatedSet)
+    {
+        var existingSet = await _appDbContext.Sets.FindAsync(setId);
         if (existingSet == null)
         {
             return NotFound();
         }
 
-        existingSet.Completed = true;
+        existingSet.Reps = updatedSet.Reps;
+        existingSet.Weight = updatedSet.Weight;
+        // Add any other fields that need updating
+
         await _appDbContext.SaveChangesAsync();
 
         return Ok(existingSet);
     }
-    
 
- 
+
+
+
 }

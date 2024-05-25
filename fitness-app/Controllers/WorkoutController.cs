@@ -51,19 +51,17 @@ public class WorkoutsController : ControllerBase
             return BadRequest(ModelState);
         }
 
-        // 1. Find the workout
         var workout = await _appDbContext.Workouts.FindAsync(workoutId);
         if (workout == null)
         {
             return NotFound();
         }
 
-        // 2. Create a new WorkoutExerciseOrder object
         var workoutExerciseOrder = new WorkoutExerciseOrder
         {
             WorkoutId = workoutId,
-            ExerciseId = exerciseId.ExerciseId, // Assuming 'exercise' object has an 'Id' property
-            Order = await GetNextExerciseOrder(workoutId) // Get the next order for this workout
+            ExerciseId = exerciseId.ExerciseId,
+            Order = await GetNextExerciseOrder(workoutId)
         };
 
         // 4. Save the workout and WorkoutExerciseOrder
@@ -102,14 +100,37 @@ public class WorkoutsController : ControllerBase
 
         var user = await _appDbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
-        var workouts = await _workoutService.GetPreviousWorkoutsAsync(userId);
-        if(workouts == null)
+        if (user == null)
         {
             return NotFound();
         }
-        user.Workouts = workouts;
-        _appDbContext.Users.Update(user);
-        await _appDbContext.SaveChangesAsync();
+
+        var workouts = await _appDbContext.Workouts
+            .Where(w => w.UserId == userId)
+            .Include(w => w.Sets)
+            .Include(w => w.WorkoutExerciseOrders)
+                .ThenInclude(weo => weo.Exercise)
+            .ToListAsync();
+
+        if (workouts == null || !workouts.Any())
+        {
+            return NotFound("No workouts found for the user.");
+        }
+
+        // Debugging information
+        Console.WriteLine($"Total workouts found: {workouts.Count}");
+        foreach (var workout in workouts)
+        {
+            Console.WriteLine($"Workout ID: {workout.Id}");
+            Console.WriteLine($"Number of Sets: {workout.Sets.Count}");
+            Console.WriteLine($"Number of WorkoutExerciseOrders: {workout.WorkoutExerciseOrders.Count}");
+
+            foreach (var weo in workout.WorkoutExerciseOrders)
+            {
+                Console.WriteLine($"Exercise ID: {weo.ExerciseId}, Exercise Name: {weo.Exercise?.Name}");
+            }
+        }
+
         return Ok(workouts);
     }
 

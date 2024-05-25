@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import HeaderComponent from './HeaderComponent';
 import { useNavigate } from 'react-router-dom';
+import { debounce } from 'lodash';
 
 const WorkoutComponent = () => {
   const [isWorkoutActive, setIsWorkoutActive] = useState(false);
@@ -9,6 +10,7 @@ const WorkoutComponent = () => {
   const [previousWorkouts, setPreviousWorkouts] = useState([]);
   const [exercisesList, setExercisesList] = useState([]);
   const [selectedExercise, setSelectedExercise] = useState(null);
+  const [expandedWorkouts, setExpandedWorkouts] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -87,38 +89,40 @@ const WorkoutComponent = () => {
     window.location.reload();
   };
 
-  const handleRepsChange = (exerciseId, setId, newReps) => {
-    setExercises((prevState) => {
-      const updatedExercises = prevState.map((exercise) => {
-        if (exercise.id === exerciseId) {
-          return {
-            ...exercise,
-            sets: exercise.sets.map((set) =>
-              set.id === setId ? { ...set, reps: newReps } : set
-            ),
-          };
-        }
-        return exercise;
+  const debouncedSaveSetChanges = useCallback(
+    debounce(async (setId, changes) => {
+      const jwt_token = localStorage.getItem('jwtToken');
+      const response = await fetch(`http://localhost:5260/api/sets/${setId}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${jwt_token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(changes),
       });
-      return updatedExercises;
-    });
-  };
 
-  const handleWeightChange = (exerciseId, setId, newWeight) => {
-    setExercises((prevState) => {
-      const updatedExercises = prevState.map((exercise) => {
+      if (!response.ok) {
+        console.error('Error updating set:', await response.text());
+        // Handle potential errors from the backend API call
+      }
+    }, 500), [] // 500ms delay
+  );
+
+  const handleSetChange = (exerciseId, setId, changes) => {
+    setExercises((exercises) => {
+      const updatedExercises = exercises.map((exercise) => {
         if (exercise.id === exerciseId) {
+          const updatedSet = exercise.sets.find((set) => set.id === setId);
           return {
             ...exercise,
-            sets: exercise.sets.map((set) =>
-              set.id === setId ? { ...set, weight: newWeight } : set
-            ),
+            sets: exercise.sets.map((set) => (set.id === setId ? { ...updatedSet, ...changes } : set)),
           };
         }
         return exercise;
       });
       return updatedExercises;
     });
+    debouncedSaveSetChanges(setId, changes); // Pass the changes directly
   };
 
   const handleAddSet = async (exerciseId) => {
@@ -159,6 +163,7 @@ const WorkoutComponent = () => {
 
   const handleDeleteSet = async (exerciseId, setId) => {
     const jwt_token = localStorage.getItem('jwtToken');
+    console.log(setId);
     const response = await fetch(`http://localhost:5260/api/sets/${setId}`, {
       method: 'DELETE',
       headers: {
@@ -255,14 +260,14 @@ const WorkoutComponent = () => {
                       type="number"
                       min="1"
                       value={set.reps}
-                      onChange={(e) => handleRepsChange(exercise.id, set.id, e.target.value)}
+                      onChange={(e) => handleSetChange(exercise.id, set.id, { reps: e.target.value })}
                       placeholder="Reps"
                     />
                     <input
                       type="number"
                       min="0"
                       value={set.weight}
-                      onChange={(e) => handleWeightChange(exercise.id, set.id, e.target.value)}
+                      onChange={(e) => handleSetChange(exercise.id, set.id, { weight: e.target.value })}
                       placeholder="Weight"
                     />
                     <button onClick={() => handleCompleteSet(exercise.id, set.id)}>
@@ -307,24 +312,54 @@ const WorkoutComponent = () => {
     }
   };
 
+  const toggleWorkoutExpansion = (workoutId) => {
+    setExpandedWorkouts((prevState) => ({
+      ...prevState,
+      [workoutId]: !prevState[workoutId],
+    }));
+  };
+
   const renderPreviousWorkouts = () => {
     return (
       <div className="workout-tracker-area">
         <h3>Previous Workouts</h3>
         <ul>
-          {previousWorkouts.map((workout) => (
-            <li key={workout.id}>
-              <strong>{workout.name}</strong> ({workout.type}) - {workout.duration} minutes (
-              {workout.exercises && workout.exercises.length} Exercises)
-              {workout.description && <p>Description: {workout.description}</p>}
-              {workout.notes && <p>Notes: {workout.notes}</p>}
-            </li>
-          ))}
+          {previousWorkouts && previousWorkouts.length > 0 ? (
+            previousWorkouts.map((workout) => (
+              <li key={workout.id}>
+                <div onClick={() => toggleWorkoutExpansion(workout.id)}>
+                  <strong>{workout.name}</strong> ({workout.type}) - {workout.duration} minutes (
+                  {workout.workoutExerciseOrders && workout.workoutExerciseOrders.length} Exercises)
+                  {workout.description && <p>Description: {workout.description}</p>}
+                  {workout.notes && <p>Notes: {workout.notes}</p>}
+                </div>
+                {expandedWorkouts[workout.id] && workout.workoutExerciseOrders && (
+                  <ul>
+                    {workout.workoutExerciseOrders.map((weo) => (
+                      <li key={weo.id}>
+                        <strong>{weo.exercise.name}</strong>
+                        <ul>
+                          {workout.sets
+                            .filter((set) => set.exerciseId === weo.exercise.id)
+                            .map((set) => (
+                              <li key={set.id}>
+                                Reps: {set.reps}, Weight: {set.weight}, Completed: {set.completed ? 'Yes' : 'No'}
+                              </li>
+                            ))}
+                        </ul>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))
+          ) : (
+            <li>No previous workouts available</li>
+          )}
         </ul>
       </div>
     );
   };
-
   return (
     <div className="workout-tracker">
       <HeaderComponent />

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace FitnessApp.Model
 {
@@ -10,10 +11,11 @@ namespace FitnessApp.Model
         public int Id { get; set; }
         [Required]
         public int WorkoutId { get; set; }
-        [Required]
+        [JsonIgnore]
         public Workout Workout { get; set; }
         [Required]
         public int ExerciseId { get; set; }
+        public Exercise Exercise { get; set; }
         [Required]
         public int Order { get; set; }
     }

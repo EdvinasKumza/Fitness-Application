@@ -1,6 +1,7 @@
 ﻿using FitnessApp.Model;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace FitnessApp.Model;
 
@@ -21,6 +22,7 @@ public class Set
     public int Order { get; set; }
     [Required]
     public int WorkoutId { get; set; }
+    [JsonIgnore]
     public Workout Workout { get; set; }
     [Required]
     public int ExerciseId { get; set; }
