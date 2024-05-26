@@ -11,6 +11,10 @@ const HeaderComponent = () => {
     navigate("/");
   };
 
+  const handleCalendarButton = () => {
+    navigate("/calendar");
+  };
+
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   };
@@ -45,9 +49,6 @@ const HeaderComponent = () => {
           </li>
           <li>
             <a href="#services">Services</a>
-          </li>
-          <li>
-            <a href="#about">About</a>
           </li>
         </ul>
         <div>
