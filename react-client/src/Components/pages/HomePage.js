@@ -38,6 +38,16 @@ function HomePage() {
     }
   };
 
+  const handleOpenSignUpModaOnSwitch = () => {
+    setShowSignUpModal(true);
+    setShowLoginModal(false);
+  };
+
+  const handleOpenLogInModaOnSwitch = () => {
+    setShowSignUpModal(false);
+    setShowLoginModal(true);
+  };
+
   const handleOpenSignUpModal = () => {
     setShowSignUpModal(true);
   };
@@ -74,7 +84,9 @@ function HomePage() {
   const handleWorkoutsButton = () => {
     navigate("/workouts");
   };
-
+  const handleCalendarButton = () => {
+    navigate("/calendar");
+  };
   const handleProgressButton = () => {
     navigate("/progress");
   };
@@ -117,7 +129,10 @@ function HomePage() {
                   SIGN UP
                 </a>
                 {showSignUpModal && (
-                  <SignUpModal onClose={handleCloseSignUpModal} />
+                  <SignUpModal
+                    onClose={handleCloseSignUpModal}
+                    onSwitchToLogIn={handleOpenLogInModaOnSwitch}
+                  />
                 )}
                 <a
                   className="log-in-button button"
@@ -126,7 +141,10 @@ function HomePage() {
                   LOG IN
                 </a>
                 {showLoginModal && (
-                  <LoginModal onClose={handleCloseLoginModal} />
+                  <LoginModal
+                    onClose={handleCloseLoginModal}
+                    onSwitchToSignUp={handleOpenSignUpModaOnSwitch}
+                  />
                 )}
               </>
             ) : (
@@ -155,6 +173,12 @@ function HomePage() {
                       onClick={handleProgressButton}
                     >
                       Progress
+                    </button>
+                    <button
+                      className="dropdown-item"
+                      onClick={handleCalendarButton}
+                    >
+                      Calendar
                     </button>
                     <button className="dropdown-item" onClick={handleLogout}>
                       Logout

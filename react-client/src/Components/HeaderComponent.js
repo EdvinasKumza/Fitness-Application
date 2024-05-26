@@ -10,6 +10,10 @@ const HeaderComponent = () => {
   const handleHomeButton = () => {
     navigate("/");
   };
+  const handleServiceButton = () => {
+    navigate("/");
+    window.location.hash = "#services";
+  };
 
   const handleCalendarButton = () => {
     navigate("/calendar");
@@ -48,7 +52,7 @@ const HeaderComponent = () => {
             <button onClick={handleHomeButton}>Home</button>
           </li>
           <li>
-            <a href="#services">Services</a>
+            <button onClick={handleServiceButton}>Services</button>
           </li>
         </ul>
         <div>
@@ -66,6 +70,7 @@ const HeaderComponent = () => {
                 <button onClick={handleWorkoutsButton}>Workouts</button>
                 <button onClick={handleGoalsButton}>Goals</button>
                 <button onClick={handleProgressButton}>Progress</button>
+                <button onClick={handleCalendarButton}>Calendar</button>
                 <button onClick={handleLogout}>Logout</button>
               </div>
             )}
