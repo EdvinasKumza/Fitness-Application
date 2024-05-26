@@ -19,12 +19,26 @@
   padding: 15px 40px;
   font-size: 20px;
   cursor: pointer;
+}
+.services-section {
+  padding: 50px 20px;
+  background-color: black;
+}
 
-  margin-right: 30px;
+.services-section h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.services-section p {
+  text-align: center;
+  max-width: 600px;
+  color: white;
+  margin: 0 auto;
 }
 .log-in-button {
   font-family: "Poppins";
-
+  margin-right: 30px;
   color: grey;
   border: none;
   padding: 15px 40px;
@@ -34,6 +48,8 @@
 }
 .navbar-links {
   list-style: none;
+  gap: 20px; /* Add space between links */
+  margin: 0 auto; /* Center the links */
   display: flex;
   font-family: "Poppins";
 }
@@ -64,7 +80,7 @@
   border: none; /* No border */
   cursor: pointer; /* Cursor indicates it's clickable */
   border-radius: 25px; /* Rounded corners */
-  background-color: #25ab75;
+  background-color: #4caf50;
 
   display: inline-flex; /* Use flexbox for alignment */
   align-items: center; /* Center items vertically */
@@ -100,10 +116,11 @@ body {
   left: 0; /* Aligns the navbar to the left of the viewport */
   width: 98%; /* Ensures the navbar spans the full width of the screen */
   display: flex;
+  background-color: #333;
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  background-color: transparent; /* Change the color as required */
+
   color: white;
   z-index: 1000; /* Ensures the navbar stays above other content */
 }
@@ -205,7 +222,7 @@ html {
 /* Dropdown container */
 .dropdown {
   position: relative;
-  background-color: black;
+  background-color: #333;
   display: inline-block;
   z-index: 2000;
 }
@@ -222,7 +239,7 @@ html {
 .dropdown-content {
   position: absolute;
   text-align: left;
-  background-color: black;
+  background-color: #333;
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 2000;
@@ -234,10 +251,21 @@ html {
   width: 150px;
   text-align: left;
 }
-
+.dropdown-content a {
+  color: white;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+  background: none;
+  border: none;
+  width: 100%;
+  cursor: pointer;
+}
 .dropdown-item-first {
   width: 150px;
   text-align: left;
+  background-color: #333;
   padding-bottom: 10px;
 }
 .dropdown-content button:hover {
@@ -253,14 +281,14 @@ html {
 
   font-size: 20px;
   cursor: pointer;
-  background-color: black;
+  background-color: #333;
   border-radius: 25px;
   display: block;
   margin-right: 100px;
   padding-top: 10px;
 }
 .dropdown-content a {
-  background-color: black;
+  background-color: #333;
 }
 .dropdown-content a:hover {
   color: white;
@@ -272,4 +300,68 @@ html {
 
 .dropdown-content.show {
   display: block;
+}
+
+.services-section {
+  font-family: "Poppins", sans-serif;
+  padding: 50px 20px;
+  background-color: black;
+}
+
+.services-section h2 {
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 36px;
+}
+
+.services-grid {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.service-item {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  padding: 20px;
+  max-width: 300px;
+}
+
+.service-image {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.service-item h3 {
+  margin-top: 20px;
+  font-size: 24px;
+}
+
+.service-item p {
+  font-size: 16px;
+  color: #555;
+}
+
+.cta-button {
+  font-family: "Poppins", sans-serif;
+  font-weight: bold;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 25px;
+  background-color: #4caf50;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.cta-button:hover {
+  background-color: #15915f;
 }
