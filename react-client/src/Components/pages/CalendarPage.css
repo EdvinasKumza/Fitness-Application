@@ -1,0 +1,83 @@
+.calendar-page {
+    padding: 100px 20px 20px; 
+    background-color: black;
+}
+
+    .calendar-page h1 {
+        text-align: center;
+        color: white;
+    }
+
+.fc {
+    background-color: #444444;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+    .fc .fc-toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+        .fc .fc-toolbar h2 {
+            font-size: 1.5em;
+            color: white;
+        }
+
+        .fc .fc-toolbar button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+            .fc .fc-toolbar button:hover {
+                background-color: #45a049;
+            }
+
+    .fc .fc-daygrid-day-number {
+        color: white;
+    }
+
+    .fc .fc-daygrid-day {
+        background-color: #555555;
+        border: 1px solid #666666;
+    }
+
+        .fc .fc-daygrid-day:hover {
+            background-color: #666666;
+        }
+
+    .fc .fc-event {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 5px;
+        border-radius: 5px;
+    }
+
+        .fc .fc-event:hover {
+            background-color: #45a049;
+        }
+
+    .fc .fc-today {
+        background-color: #333333 !important;
+        border: 1px solid #4CAF50 !important;
+    }
+
+    .fc .fc-daygrid-day-top {
+        background-color: #555555;
+    }
+
+    .fc .fc-scrollgrid-section-header td {
+        background-color: #333333;
+    }
+
+    .fc .fc-toolbar-title {
+        color: black;
+    }

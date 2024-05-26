@@ -1,0 +1,216 @@
+/* General modal styling */
+.schedule-modal {
+    position: fixed;
+    z-index: 1050; /* Ensure it appears above other elements */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4); /* Black with opacity */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.schedule-modal-content {
+    background-color: #333333; /* Dark Gray */
+    color: white;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.schedule-close-button {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+}
+
+    .schedule-close-button:hover,
+    .schedule-close-button:focus {
+        color: white;
+        text-decoration: none;
+    }
+
+.schedule-modal-title {
+    color: white !important; 
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.schedule-form-group {
+    margin-bottom: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.schedule-label {
+    margin-bottom: 5px;
+    color: white;
+    font-size: 16px;
+}
+
+.schedule-form-control {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.schedule-submit-button {
+    background-color: #4CAF50; /* Match the theme color */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px; /* Add margin to separate buttons */
+    width: 100%;
+    max-width: 300px;
+}
+
+.schedule-cancel-button {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px; /* Add margin to separate buttons */
+    width: 100%;
+    max-width: 300px;
+}
+
+.schedule-submit-button:hover {
+    background-color: #45a049;
+}
+
+.schedule-cancel-button:hover {
+    background-color: darkred;
+}
+
+.react-datepicker {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.react-datepicker__header {
+    background-color: #4CAF50;
+    color: white;
+    padding-top: 40px;
+}
+
+.react-datepicker__current-month,
+.react-datepicker-time__header,
+.react-datepicker-year-header {
+    color: white;
+}
+
+.react-datepicker__day-name,
+.react-datepicker__day,
+.react-datepicker__time-name {
+    color: #333;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--in-selecting-range,
+.react-datepicker__day--in-range {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+    .react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list li.react-datepicker__time-list-item--selected {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+.schedule-modal .react-datepicker__navigation {
+    top: 10px;
+}
+
+.schedule-modal .react-datepicker__navigation--previous,
+.schedule-modal .react-datepicker__navigation--next {
+    width: 30px;
+    height: 30px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+}
+
+    .schedule-modal .react-datepicker__navigation--previous:hover,
+    .schedule-modal .react-datepicker__navigation--next:hover {
+        background-color: #45a049;
+    }
+
+    .schedule-modal .react-datepicker__navigation--previous::before,
+    .schedule-modal .react-datepicker__navigation--next::before {
+        content: '';
+        display: inline-block;
+        border: solid white;
+        border-width: 0 2px 2px 0;
+        padding: 3px;
+    }
+
+    .schedule-modal .react-datepicker__navigation--previous::before {
+        transform: rotate(135deg);
+    }
+
+    .schedule-modal .react-datepicker__navigation--next::before {
+        transform: rotate(-45deg);
+    }
+
+.schedule-modal .react-datepicker__navigation-icon::before {
+    border-color: white;
+}
+
+/* Ensure other months' days are hidden */
+.react-datepicker__day--outside-month {
+    visibility: hidden;
+}
+
+.schedule-time-picker {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    display: flex;
+    justify-content: center;
+}
+
+.time-picker-input {
+    width: 50px;
+    padding: 5px;
+    margin: 0 5px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
