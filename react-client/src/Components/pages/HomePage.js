@@ -59,13 +59,7 @@ function HomePage() {
   const handleCloseLoginModal = () => {
     setShowLoginModal(false);
   };
-  const handleMouseEnter = () => {
-    setDropdownOpen(true);
-  };
 
-  const handleMouseLeave = () => {
-    setDropdownOpen(false);
-  };
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   };
@@ -135,17 +129,11 @@ function HomePage() {
           ) : (
             <div className="dropdown">
               <button className="dropbtn" onClick={toggleDropdown}>
-                {/* {name} */}
-                {/* <a> */}
                 <img src={userImage} width="25px" height="25px"></img>
                 Paskyra
-                {/* </a> */}
               </button>
               {dropdownOpen && (
-                <div
-                  className="dropdown-content"
-                  // onMouseLeave={handleMouseLeave}
-                >
+                <div className="dropdown-content">
                   <a className="dropdown-item-first">Sveiki, {name}</a>
                   <button
                     className="dropdown-item"

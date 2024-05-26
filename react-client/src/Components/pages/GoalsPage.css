@@ -1,62 +1,145 @@
 /* Styles for the goals setting area */
 .goal-setting-area {
-    color: #d4d4d4; /* Light gray text for better visibility on dark backgrounds */
-    padding: 20px;
-    background-color: #333; /* Dark background for the section */
-    border-radius: 8px; /* Rounded corners */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
-    margin: 20px auto;
-    max-width: 600px;
+  width: 600px; /* Use 100% to fill the parent container */
+  max-width: 900px; /* Maximum width */
+  height: 80vh; /* Viewport height */
+  color: #d4d4d4; /* Light gray text for better visibility on dark backgrounds */
+  padding: 20px;
+  background-color: #333; /* Dark background for the section */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+  margin: 20px auto; /* Centered with auto margins */
+  position: relative; /* Positioned for stacking context */
+  /* display: flex; Enable flexbox */
+  flex-direction: column; /* Stack children vertically */
+  overflow: hidden; /* Hidden overflow to avoid scrollbars on the main container */
+  z-index: 1000;
+}
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 2;
+}
+.flex {
+  display: flex;
+}
+.width-height-100 {
+  width: 100%;
+  box-sizing: border-box;
+  height: 100%;
 }
 
+.set-goals-layout {
+  text-align: left;
+  display: flex; /* Use flexbox layout */
+  flex-direction: column; /* Stack items vertically */
+  max-height: 300px; /* Adjust based on header and padding */
+  overflow-y: auto; /* Enable vertical scrolling */
+  flex-grow: 1; /* Allow it to grow and take available space */
+  padding-bottom: 10px; /* Ensure padding at the bottom */
+  margin-top: 20px;
+  gap: 10px; /* Space between items */
+}
 .goal-setting-area label {
-    margin-bottom: 10px; /* Spacing below labels */
-    color: #9cef9c; /* Soft green for labels */
-    font-size: 16px; /* Increased font size for readability */
-    display: block; /* Ensures label takes the full width */
+  margin-bottom: 10px; /* Spacing below labels */
+  color: #9cef9c; /* Soft green for labels */
+  font-size: 16px; /* Increased font size for readability */
+  display: block; /* Ensures label takes the full width */
 }
 
 .goal-setting-area select,
 .goal-setting-area input[type="number"] {
-    width: 100%; /* Full width of the container */
-    padding: 8px; /* Padding for better text input visibility */
-    margin-bottom: 15px; /* Space below inputs */
-    background-color: #242424; /* Slightly lighter dark background for inputs */
-    border: 2px solid #555; /* Subtle border for inputs */
-    border-radius: 4px; /* Matching rounded corners */
-    color: #fff; /* White text color */
+  width: 100%; /* Full width of the container */
+  padding: 8px; /* Padding for better text input visibility */
+  margin-bottom: 15px; /* Space below inputs */
+  background-color: #242424; /* Slightly lighter dark background for inputs */
+  border: 2px solid #555; /* Subtle border for inputs */
+  border-radius: 4px; /* Matching rounded corners */
+  color: #fff; /* White text color */
 }
 
 #set-goal {
-    width: 100%; /* Full width button */
-    padding: 10px; /* Padding for a better click area */
-    background-color: #4CAF50; /* Green background */
-    color: #fff; /* White text */
-    border: none; /* No border */
-    border-radius: 4px; /* Rounded corners for the button */
-    cursor: pointer; /* Pointer cursor on hover */
-    transition: background-color 0.3s; /* Smooth transition for hover effect */
+  width: 100%; /* Full width button */
+  padding: 10px; /* Padding for a better click area */
+  background-color: #4caf50; /* Green background */
+  color: #fff; /* White text */
+  border: none; /* No border */
+  border-radius: 4px; /* Rounded corners for the button */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s; /* Smooth transition for hover effect */
 }
 
 .goal-setting-area button:hover {
-    background-color: #367c39; /* Darker green on hover */
+  /* background-color: #367c39; Darker green on hover */
 }
 
 .goal-setting-area ul {
-    list-style: none; /* Remove default list styling */
-    padding: 0; /* Remove default padding */
+  list-style: none; /* Remove default list styling */
+  padding: 0; /* Remove default padding */
 }
 
 .goal-setting-area li {
-    padding: 8px; /* Padding for each list item */
-    border-bottom: 1px solid #444; /* Subtle separator for items */
+  padding: 8px; /* Padding for each list item */
+  border-bottom: 1px solid #444; /* Subtle separator for items */
 }
 
 .goal-setting-area li:last-child {
-    border-bottom: none; /* No border on the last item */
+  border-bottom: none; /* No border on the last item */
 }
 
 .goal-setting-area h3 {
-    margin-top: 20px; /* Space above the section heading */
-    color: #adebad; /* Lighter green for heading */
+  margin-top: 20px; /* Space above the section heading */
+  color: #adebad; /* Lighter green for heading */
+}
+.set-goals-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.grid-header {
+  display: contents;
+  font-weight: bold;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 5px;
+}
+
+.grid-row {
+  display: contents;
+}
+
+.grid-row div {
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+.grid-header div:last-child,
+.grid-row div:last-child {
+  border-right: none; /* Remove border from the last column */
+  border-bottom: none;
+}
+.grid-row div:last-child {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+.img-styling {
+  width: 20px;
+  height: 20px;
+}
+.grid-row button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 25px;
+  height: 25px;
+}
+
+.main-content {
+  padding: 20px;
+  margin-top: 100px; /* Space for the fixed goal-setting area */
 }

@@ -64,7 +64,7 @@
   border: none; /* No border */
   cursor: pointer; /* Cursor indicates it's clickable */
   border-radius: 25px; /* Rounded corners */
-  background-color: #25ab75;
+  background-color: #4caf50;
 
   display: inline-flex; /* Use flexbox for alignment */
   align-items: center; /* Center items vertically */
